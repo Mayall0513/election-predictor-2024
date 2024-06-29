@@ -1,0 +1,307 @@
+body {
+  background-color: #1b1e2b;
+}
+
+.root {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 100;
+  color: #eaeaea;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100vw !important;
+  margin: 0px;
+  padding: 0px;
+}
+
+button {
+  background-color: rgb(0, 115, 128);
+  border: none;
+  color: white;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.account-details-section {
+  display: inline-grid;
+}
+
+.account-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  align-items: center;
+  gap: 2%
+}
+
+.align-right {
+  text-align: right;
+}.avatar {
+  border-radius: 50%;
+}
+
+.candidate-dem .incumbent {
+  background-color: #00aef3;
+}
+
+.candidate-dem:not(.incumbent) {
+  color: #00aef3;
+}
+
+.candidate-ind .incumbent {
+  background-color: #dba400;
+}
+
+.candidate-ind:not(.incumbent) {
+  color: #dba400;
+}
+
+.candidate-oth .incumbent {
+  background-color: #848484;
+}
+
+.candidate-oth:not(.incumbent) {
+  color: #848484;
+}
+
+.candidate-rep .incumbent {
+  background-color: #e81b23;
+}
+
+.candidate-rep:not(.incumbent) {
+  color: #e81b23;
+}
+
+.flex-4 {
+  flex: 4 !important;
+}
+
+.incumbent {
+  margin: 0px;
+  padding: 0px;
+  border-radius: 50%;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  color: #efefef;
+  text-align: center;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+.incumbent-parent {
+  display: flex;
+  flex-flow: row;
+  justify-content: left;
+  align-items: center;
+}
+
+.input-error {
+  color: #ff0000;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #5291ff;
+  cursor: pointer;
+}
+
+.map-parent {
+  min-width: 604px;
+  min-height: 380px;
+  flex-grow: 0.4;
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+
+.min-width-4 {
+  min-width: max(8px, 4vw);
+}
+
+.min-width-8 {
+  min-width: max(16px, 8vw);
+}
+
+.min-width-12 {
+  min-width: max(24px, 12vw);
+}
+
+.modal {
+  position: unset;
+  background-color: #efefef;
+  color: #0a0a0a;
+  text-align: center;
+  padding: 30px 20px 20px 20px;
+  border-radius: 20px;
+}
+
+.modal-parent {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.padding-left-1 {
+  padding-left: 1vw !important;
+}
+
+.margin-left-1 {
+  margin-left: 1vw !important;
+}
+
+.prediction-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4vh;
+  align-items: stretch;
+}
+
+.race-overview > button {
+  min-width: 75px;
+  width: 5vw;
+  max-width: 85px;
+}
+
+.race-overview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 0.4;
+  text-align: center
+}
+
+.ribbon {
+  margin: 1vh 1vw 0 1vw;
+  padding: 0 0 1vh 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.ribbon-container {
+  width: 100%;
+  margin-bottom: 4vh;
+}
+
+.ribbon-item {
+  flex: 1;
+  text-align: center;
+}
+
+.page-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.state {
+  stroke: #c8c8c8;
+  stroke-width: 1;
+}
+
+.state-excluded {
+  fill: #ebebeb;
+  stroke: #e8e8e8;
+}
+
+.state:active:not(.state-excluded),
+.state-focused {
+  stroke-width: 2;
+  stroke: #6a6a6a !important;
+}
+
+.state:hover:not(.state-excluded):not(.state-focused) {
+  cursor: pointer;
+  stroke: #bababa;
+}
+
+.static-tooltip .static-tooltip-contents {
+  display: none;
+  position: absolute;
+  text-align: left;
+  cursor: initial;
+}
+
+.static-tooltip {
+  position: relative;
+}
+
+.static-tooltip:hover .static-tooltip-contents {
+  display: block;
+  min-width: 12vw;
+}
+
+.table {
+  padding: 0px;
+  margin: 0px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  border-collapse: collapse;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.table-text-input {
+  border: none;
+  border-bottom: 1px solid #a9a9a9;
+  color: #eaeaea;
+  background-color: transparent;
+  max-width: 80px;
+  padding: 0px 1px 0px 1px;
+}
+
+.table-text-input-error {
+  border: none;
+  border-bottom: 1px solid #ef0000;
+}
+
+.tooltip {
+  background-color: #efefef;
+  outline-style: solid;
+  outline-width: 1px;
+  outline-color: #8c8c8c;
+  padding: 4px;
+  user-select: none;
+  color: #0a0a0a;
+}
+
+.tooltip-hint {
+  font-size: 80%;
+  margin-bottom: 0px;
+}
+
+.tooltip-title {
+  margin-top: 0px;
+}
+
+.ribbon .link-button {
+  font-size: 12pt;
+}
+
+.ribbon .extra-info {
+  font-size: 12pt;
+}
+
+.prediction-section-title {
+  font-size: 16pt;
+  color: #e2e2e2;
+}
+
+.prediction-section-state-name {
+  font-size: 18pt;
+  color: #f8f8f8;
+  font-weight: bolder;
+}
