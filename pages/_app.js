@@ -1,7 +1,9 @@
-export default function _app({ Component, pageProps }) {
+import '../styles/global.css'
+
+export default function({ component, page_properties }) {
   return (
     <div className="root">
-      <Component { ...pageProps } /> 
+      <component { ... page_properties } /> 
     </div>
     );
 };
