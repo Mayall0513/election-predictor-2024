@@ -10,14 +10,14 @@ const tokenConfig = {
     }
 };
 
-export default async (request, response) => {
-    if (request.query.code) {
+export default async (req, res) => {
+    if (req.query.code) {
         try {
             const token_params = new URLSearchParams({
                 client_id: process.env.DISCORD_CLIENT_ID,
                 client_secret: process.env.DISCORD_CLIENT_SECRET,
                 grant_type: 'authorization_code',
-                code: request.query.code,
+                code: req.query.code,
                 redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
                 scope: 'identify'
             });
@@ -42,18 +42,22 @@ export default async (request, response) => {
 
             await axios.post(`${process.env.DISCORD_API_URI}/oauth2/token/revoke`, revoke_params.toString());
 
+            const avatar_url = avatar.startsWith('a_')
+                ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.gif?size=80`
+                : `https://cdn.discordapp.com/avatars/${id}/${avatar}?size=80`;
+
             const token = jwt.sign(
                 { 
                     id, 
                     username, 
-                    avatar,
+                    avatar_url,
                     discriminator                
                 },
                 process.env.JWT_SECRET,
                 { expiresIn: "24h" }
             );
     
-            response.setHeader(
+            res.setHeader(
                 "Set-Cookie", 
                 cookie.serialize(
                     process.env.AUTH_COOKIE_NAME,
@@ -67,13 +71,13 @@ export default async (request, response) => {
                 )
             );
 
-            return response.status(200).redirect(process.env.FRONTEND_URI);
+            return res.status(200).redirect(process.env.FRONTEND_URI);
         }
 
         catch(error) { }
     }
 
-    return response.status(200).redirect(`${process.env.DISCORD_URL}/oauth2/authorize?response_type=code&scope=${process.env.DISCORD_CLIENT_SCOPE}&client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${process.env.FRONTEND_URI}/api/auth/signin`);
+    return res.status(200).redirect(`${process.env.DISCORD_URL}/oauth2/authorize?response_type=code&scope=${process.env.DISCORD_AUTH_SCOPE}&client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${process.env.FRONTEND_URI}/api/auth/signin`);
 };
 
 export const config = {

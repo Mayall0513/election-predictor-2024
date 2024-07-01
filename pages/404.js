@@ -1,4 +1,4 @@
-export default function(properties) {
+export default function(props) {
     return (
         <div>
             404

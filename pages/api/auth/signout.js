@@ -1,7 +1,7 @@
 import cookie from 'cookie';
 
-export default (request, response) => {
-    response.setHeader('Set-Cookie',
+export default (req, res) => {
+    res.setHeader('Set-Cookie',
         cookie.serialize(process.env.AUTH_COOKIE_NAME, '', 
             {
                 maxAge: 0,
@@ -10,7 +10,7 @@ export default (request, response) => {
         )
     );
 
-    response.status(200).redirect("/");
+    res.status(200).redirect("/");
 }
 
 export const config = {
