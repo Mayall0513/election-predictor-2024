@@ -1,7 +1,7 @@
 import users from '../data/users';
 import Ribbon from "../components/ribbon";
 
-export default function(props) {
+export default function (props) {
     return (
         <>
             <Ribbon user={props.user}/>
