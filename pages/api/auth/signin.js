@@ -10,50 +10,48 @@ const tokenConfig = {
     }
 };
 
-const accountAgeMinimum = new Date('2022/11/01 23:59:59');
-
 export default async (req, res) => {
     if (req.query.code) {
         try {
-            const tokenParams = new URLSearchParams({
+            const token_params = new URLSearchParams({
                 client_id: process.env.DISCORD_CLIENT_ID,
                 client_secret: process.env.DISCORD_CLIENT_SECRET,
                 grant_type: 'authorization_code',
                 code: req.query.code,
-                redirect_uri: process.env.FRONTEND_URI + "/api/auth/signin",
+                redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
                 scope: 'identify'
             });
-    
-            const tokenResponse = await axios.post(process.env.DISCORD_API_URI + "/oauth2/token", tokenParams.toString(), tokenConfig);
-            const { token_type, access_token } = tokenResponse.data;
 
-            const userConfig = {
+            const token_response = await axios.post(`${process.env.DISCORD_API_URI}/oauth2/token`, token_params.toString(), tokenConfig);
+            const { token_type, access_token } = token_response.data;
+
+            const user_config = {
                 headers: {
                     'Authorization': `${token_type} ${access_token}`
                 }
             };
 
-            const userResponse = await axios.get(process.env.DISCORD_API_URI + "/users/@me", userConfig);
-            const { id , username, avatar, discriminator } = userResponse.data;
+            const user_response = await axios.get(`${process.env.DISCORD_API_URI}/users/@me`, user_config);
+            const { id , username, avatar, discriminator } = user_response.data;
 
-            const revokeParams = new URLSearchParams({
+            const revoke_params = new URLSearchParams({
                 token: access_token,
                 client_id: process.env.DISCORD_CLIENT_ID,
                 client_secret: process.env.DISCORD_CLIENT_SECRET,
             });
 
-            await axios.post(process.env.DISCORD_API_URI + "/oauth2/token/revoke", revokeParams.toString());
+            await axios.post(`${process.env.DISCORD_API_URI}/oauth2/token/revoke`, revoke_params.toString());
 
-            const timestampNum = parseInt(BigInt(id) >> 22n) + 1_420_070_400_000;
-            const timestampDate = new Date(timestampNum);
+            const avatar_url = avatar.startsWith('a_')
+                ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.gif?size=80`
+                : `https://cdn.discordapp.com/avatars/${id}/${avatar}?size=80`;
 
             const token = jwt.sign(
                 { 
                     id, 
                     username, 
-                    avatar,
-                    discriminator,
-                    old: timestampDate < accountAgeMinimum 
+                    avatar_url,
+                    discriminator                
                 },
                 process.env.JWT_SECRET,
                 { expiresIn: "24h" }
@@ -79,7 +77,7 @@ export default async (req, res) => {
         catch(error) { }
     }
 
-    return res.status(200).redirect(`https://discord.com/oauth2/authorize?response_type=code&scope=identify&client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${process.env.FRONTEND_URI}/api/auth/signin`);
+    return res.status(200).redirect(`${process.env.DISCORD_URL}/oauth2/authorize?response_type=code&scope=${process.env.DISCORD_AUTH_SCOPE}&client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${process.env.FRONTEND_URI}/api/auth/signin`);
 };
 
 export const config = {
