@@ -1,7 +1,6 @@
 import url from 'node:url';
 import crypto from 'node:crypto';
 
-import jwt from 'jsonwebtoken';
 import axios from 'axios';
 
 import helpers from '../../../helpers/api_helpers';
@@ -91,15 +90,18 @@ async function acquireToken(req, res) {
             ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.gif?size=80`
             : `https://cdn.discordapp.com/avatars/${id}/${avatar}?size=80`;
 
-        const token = jwt.sign(
+        const tokenContents = JSON.stringify(
             { 
                 id, 
                 username, 
                 avatar_url: avatarUrl,
                 discriminator                
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: "24h" }
+            }
+        );
+
+        const token = helpers.encrypt(
+            tokenContents,
+            process.env.AUTH_COOKIE_SECRET
         );
 
         helpers.setCookie(
