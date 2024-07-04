@@ -1,83 +1,126 @@
-import { URLSearchParams } from 'url';
+import url from 'node:url';
+import crypto from 'node:crypto';
 
 import jwt from 'jsonwebtoken';
-import cookie from 'cookie';
 import axios from 'axios';
 
-const tokenConfig = {
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+import helpers from '../../../helpers/api_helpers';
+
+function sendChallenge(req, res) {
+    const statePlaintext = crypto.randomBytes(parseInt(process.env.AUTH_STATE_COOKIE_SIZE)).toString('hex');
+    const stateEncrypted = helpers.encrypt(statePlaintext, process.env.AUTH_STATE_COOKIE_SECRET);
+
+    helpers.setCookie(
+        res,
+        process.env.AUTH_STATE_COOKIE_NAME,
+        stateEncrypted,
+        helpers.generateCookieOptions(30 * 60, 'lax', '/api/auth/signin')
+    )
+
+    const authoriseParams = new url.URLSearchParams({
+        response_type: 'code',
+        scope: process.env.DISCORD_AUTH_SCOPE,
+        client_id: process.env.DISCORD_CLIENT_ID,
+        prompt: 'consent',
+        redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
+        state: statePlaintext
+    });
+ 
+    res.status(200).redirect(`${process.env.DISCORD_URL}/oauth2/authorize?${authoriseParams.toString()}`);
+}
+
+async function acquireToken(req, res) {
+    const stateEncrypted = helpers.getCookie(
+        req,
+        process.env.AUTH_STATE_COOKIE_NAME
+    );
+
+    if (false == stateEncrypted) {
+        return res.status(400).json("oauth2 code required");
     }
-};
+
+    helpers.setCookie(
+        res,
+        process.env.AUTH_STATE_COOKIE_NAME,
+        '',
+        helpers.generateCookieOptions(-1)
+    )
+
+    const statePlaintext = helpers.decrypt(stateEncrypted, process.env.AUTH_STATE_COOKIE_SECRET);
+    if (statePlaintext !== req.query.state) {
+        return res.status(403).json("oauth2 code invalid");
+    }
+
+    try {
+        const tokenConfig = {
+            headers: {
+                'content-type': 'application/x-www-form-urlencoded'
+            }
+        };
+
+        const tokenParams = new URLSearchParams({
+            client_id: process.env.DISCORD_CLIENT_ID,
+            client_secret: process.env.DISCORD_CLIENT_SECRET,
+            grant_type: 'authorization_code',
+            code: req.query.code,
+            redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
+            scope: process.env.DISCORD_AUTH_SCOPE,
+        });
+
+        const tokenResponse = await axios.post(`${process.env.DISCORD_API_URI}/oauth2/token`, tokenParams.toString(), tokenConfig);
+        const { token_type, access_token } = tokenResponse.data;
+
+        const authenticationConfig = {
+            headers: {
+                'Authorization': `${token_type} ${access_token}`
+            }
+        };
+
+        const userInformation = await axios.get(`${process.env.DISCORD_API_URI}/users/@me`, authenticationConfig);
+        const { id , username, avatar, discriminator } = userInformation.data;
+
+        const revokeParams = new url.URLSearchParams({
+            token: access_token,
+            client_id: process.env.DISCORD_CLIENT_ID,
+            client_secret: process.env.DISCORD_CLIENT_SECRET,
+        });
+
+        await axios.post(`${process.env.DISCORD_API_URI}/oauth2/token/revoke`, revokeParams.toString());
+
+        const avatarUrl = avatar.startsWith('a_')
+            ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.gif?size=80`
+            : `https://cdn.discordapp.com/avatars/${id}/${avatar}?size=80`;
+
+        const token = jwt.sign(
+            { 
+                id, 
+                username, 
+                avatar_url: avatarUrl,
+                discriminator                
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "24h" }
+        );
+
+        helpers.setCookie(
+            res,
+            process.env.AUTH_COOKIE_NAME,
+            token,
+            helpers.generateCookieOptions(6 * 60 * 60)
+        )
+
+        return res.status(200).redirect(process.env.FRONTEND_URI);
+    }
+
+    catch (error) {  }
+
+    return res.status(500).redirect(process.env.FRONTEND_URI);
+}
 
 export default async (req, res) => {
-    if (req.query.code) {
-        try {
-            const token_params = new URLSearchParams({
-                client_id: process.env.DISCORD_CLIENT_ID,
-                client_secret: process.env.DISCORD_CLIENT_SECRET,
-                grant_type: 'authorization_code',
-                code: req.query.code,
-                redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
-                scope: 'identify'
-            });
-
-            const token_response = await axios.post(`${process.env.DISCORD_API_URI}/oauth2/token`, token_params.toString(), tokenConfig);
-            const { token_type, access_token } = token_response.data;
-
-            const user_config = {
-                headers: {
-                    'Authorization': `${token_type} ${access_token}`
-                }
-            };
-
-            const user_response = await axios.get(`${process.env.DISCORD_API_URI}/users/@me`, user_config);
-            const { id , username, avatar, discriminator } = user_response.data;
-
-            const revoke_params = new URLSearchParams({
-                token: access_token,
-                client_id: process.env.DISCORD_CLIENT_ID,
-                client_secret: process.env.DISCORD_CLIENT_SECRET,
-            });
-
-            await axios.post(`${process.env.DISCORD_API_URI}/oauth2/token/revoke`, revoke_params.toString());
-
-            const avatar_url = avatar.startsWith('a_')
-                ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.gif?size=80`
-                : `https://cdn.discordapp.com/avatars/${id}/${avatar}?size=80`;
-
-            const token = jwt.sign(
-                { 
-                    id, 
-                    username, 
-                    avatar_url,
-                    discriminator                
-                },
-                process.env.JWT_SECRET,
-                { expiresIn: "24h" }
-            );
-    
-            res.setHeader(
-                "Set-Cookie", 
-                cookie.serialize(
-                    process.env.AUTH_COOKIE_NAME,
-                    token,
-                    {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV != "development",
-                        sameSite: 'lax',
-                        path: '/'
-                    }
-                )
-            );
-
-            return res.status(200).redirect(process.env.FRONTEND_URI);
-        }
-
-        catch(error) { }
-    }
-
-    return res.status(200).redirect(`${process.env.DISCORD_URL}/oauth2/authorize?response_type=code&scope=${process.env.DISCORD_AUTH_SCOPE}&client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${process.env.FRONTEND_URI}/api/auth/signin`);
+    req.query.code && req.query.state
+        ? await acquireToken(req, res)
+        : sendChallenge(req, res);
 };
 
 export const config = {
