@@ -1,7 +1,7 @@
 import helpers from '../helpers/api_helpers';
 
 function getUser({ req }) {
-	if (req.cookies[process.env.AUTH_COOKIE_NAME]) {
+	if (!req.cookies[process.env.AUTH_COOKIE_NAME]) {
 		return null;
 	}
 
