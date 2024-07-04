@@ -1,4 +1,4 @@
-export default function (props) {
+export default function President(props) {
     return (
         <div>
             President
