@@ -1,7 +1,7 @@
 import users from '../data/users';
 import Ribbon from "../components/ribbon";
 
-export default function (props) {
+export default function Index(props) {
     return (
         <>
             <Ribbon user={props.user}/>

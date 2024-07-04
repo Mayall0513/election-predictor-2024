@@ -1,7 +1,8 @@
 import React from "react";
+
 import { useRouter } from "next/router";
 
-export default function({ user }) {
+export default function Ribbon({ user }) {
     const router = useRouter();
 
     return (

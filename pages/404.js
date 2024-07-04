@@ -1,4 +1,4 @@
-export default function (props) {
+export default function _404(props) {
     return (
         <div>
             404
