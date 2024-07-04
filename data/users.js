@@ -1,22 +1,27 @@
-import jwt from 'jsonwebtoken';
+import helpers from '../helpers/api_helpers';
 
-function getUser({ req: request }) {
-	if (request.cookies[process.env.AUTH_COOKIE_NAME]) {
-		try {
-			const { id, username, avatar_url, discriminator } = jwt.verify(request.cookies[process.env.AUTH_COOKIE_NAME], process.env.JWT_SECRET);
+function getUser({ req }) {
+	if (req.cookies[process.env.AUTH_COOKIE_NAME]) {
+		return null;
+	}
 
-			return { 
-				id, 
-				username, 
-				avatar_url,
-				discriminator
-			};
-		}
-		
-		catch(error) {  }
-	  }
+	try {
+		const tokenCookie = helpers.getCookie(req, process.env.AUTH_COOKIE_NAME);
+		const token = helpers.decrypt(tokenCookie, process.env.AUTH_COOKIE_SECRET);
+
+		const { id, username, avatar_url, discriminator } = JSON.parse(token);
+
+		return { 
+			id, 
+			username, 
+			avatar_url,
+			discriminator
+		};
+	}
 	
-	  return null;
+	catch(error) { 
+		return null;
+	}
 }
 
 export default {
