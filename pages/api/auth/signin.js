@@ -16,14 +16,16 @@ function sendChallenge(req, res) {
         helpers.generateCookieOptions(30 * 60, 'lax', '/api/auth/signin')
     )
 
-    const authoriseParams = new url.URLSearchParams({
-        response_type: 'code',
-        scope: process.env.DISCORD_AUTH_SCOPE,
-        client_id: process.env.DISCORD_CLIENT_ID,
-        prompt: 'consent',
-        redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
-        state: statePlaintext
-    });
+    const authoriseParams = new URLSearchParams(
+        {
+            response_type: 'code',
+            scope: process.env.DISCORD_AUTH_SCOPE,
+            client_id: process.env.DISCORD_CLIENT_ID,
+            prompt: 'consent',
+            redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
+            state: statePlaintext
+        }
+    );
  
     res.status(200).redirect(`${process.env.DISCORD_URL}/oauth2/authorize?${authoriseParams.toString()}`);
 }
@@ -34,7 +36,7 @@ async function acquireToken(req, res) {
         process.env.AUTH_STATE_COOKIE_NAME
     );
 
-    if (false == stateEncrypted) {
+    if (!stateEncrypted) {
         return res.status(400).json("oauth2 code required");
     }
 
@@ -57,14 +59,16 @@ async function acquireToken(req, res) {
             }
         };
 
-        const tokenParams = new URLSearchParams({
-            client_id: process.env.DISCORD_CLIENT_ID,
-            client_secret: process.env.DISCORD_CLIENT_SECRET,
-            grant_type: 'authorization_code',
-            code: req.query.code,
-            redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
-            scope: process.env.DISCORD_AUTH_SCOPE,
-        });
+        const tokenParams = new URLSearchParams(
+            {
+                client_id: process.env.DISCORD_CLIENT_ID,
+                client_secret: process.env.DISCORD_CLIENT_SECRET,
+                grant_type: 'authorization_code',
+                code: req.query.code,
+                redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
+                scope: process.env.DISCORD_AUTH_SCOPE,
+            }
+        );
 
         const tokenResponse = await axios.post(`${process.env.DISCORD_API_URI}/oauth2/token`, tokenParams.toString(), tokenConfig);
         const { token_type, access_token } = tokenResponse.data;
@@ -78,11 +82,13 @@ async function acquireToken(req, res) {
         const userInformation = await axios.get(`${process.env.DISCORD_API_URI}/users/@me`, authenticationConfig);
         const { id , username, avatar, discriminator } = userInformation.data;
 
-        const revokeParams = new url.URLSearchParams({
-            token: access_token,
-            client_id: process.env.DISCORD_CLIENT_ID,
-            client_secret: process.env.DISCORD_CLIENT_SECRET,
-        });
+        const revokeParams = new url.URLSearchParams(
+            {
+                token: access_token,
+                client_id: process.env.DISCORD_CLIENT_ID,
+                client_secret: process.env.DISCORD_CLIENT_SECRET,
+            }
+        );
 
         await axios.post(`${process.env.DISCORD_API_URI}/oauth2/token/revoke`, revokeParams.toString());
 
@@ -119,11 +125,13 @@ async function acquireToken(req, res) {
     return res.status(500).redirect(process.env.FRONTEND_URI);
 }
 
-export default async (req, res) => {
+async function signIn(req, res) {
     req.query.code && req.query.state
         ? await acquireToken(req, res)
         : sendChallenge(req, res);
-};
+}
+
+export default signIn;
 
 export const config = {
     api: {
