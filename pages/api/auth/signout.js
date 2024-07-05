@@ -1,17 +1,15 @@
-import cookie from 'cookie';
+import helpers from '../../../helpers/api_helpers';
 
-export default (req, res) => {
-    res.setHeader('Set-Cookie',
-        cookie.serialize(process.env.AUTH_COOKIE_NAME, '', 
-            {
-                maxAge: 0,
-                path: '/'
-            }
-        )
-    );
+export default function signOut(req, res) {
+    helpers.setCookie(
+        res,
+        process.env.AUTH_COOKIE_NAME,
+        '',
+        helpers.generateCookieOptions(-1)
+    )
 
     res.status(200).redirect("/");
-}
+};
 
 export const config = {
     api: {
