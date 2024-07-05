@@ -1,4 +1,3 @@
-import url from 'node:url';
 import crypto from 'node:crypto';
 
 import axios from 'axios';
@@ -82,7 +81,7 @@ async function acquireToken(req, res) {
         const userInformation = await axios.get(`${process.env.DISCORD_API_URI}/users/@me`, authenticationConfig);
         const { id , username, avatar, discriminator } = userInformation.data;
 
-        const revokeParams = new url.URLSearchParams(
+        const revokeParams = new URLSearchParams(
             {
                 token: access_token,
                 client_id: process.env.DISCORD_CLIENT_ID,
@@ -125,13 +124,11 @@ async function acquireToken(req, res) {
     return res.status(500).redirect(process.env.FRONTEND_URI);
 }
 
-async function signIn(req, res) {
+export default async function signIn(req, res) {
     req.query.code && req.query.state
         ? await acquireToken(req, res)
         : sendChallenge(req, res);
-}
-
-export default signIn;
+};
 
 export const config = {
     api: {
