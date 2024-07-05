@@ -62,7 +62,7 @@ const smallStates = {
         }, 
         size: {
             width: 56,
-            height: 26
+            height: 28
         },
         padding: {
             y: 8,
@@ -94,44 +94,44 @@ export default function AmericaStateMap() {
             const y1 = y0 + smallStates.dimensions.size.height;
 
             renderPasses[0].push(
-                <>
+                <g>
                     <path 
-                        key={state + "_s"}
-                        id={state}
-                        d={map + `M${x0},${y0}L${x1},${y0}L${x1},${y1}L${x0},${y1}Z`}
+                        key={ state + "_s" }
+                        id={ state }
+                        d={ map + `M${x0},${y0}L${x1},${y0}L${x1},${y1}L${x0},${y1}Z` }
                         className="state"
                     />
                     <text 
-                        key={state + "_p"}
-                        href={"xlink:" + state}
-                        x="0"
-                        y="50%"
-                        dominantBaseline="middle"
+                        key={ state + "_t" }
+                        x={ x0 + (smallStates.dimensions.size.width / 2) }
+                        y={ y0 + (smallStates.dimensions.size.height / 2) }
+                        textAnchor="middle"
+                        dominantBaseline="central"
                         className="state-panel-tooltip"
                     >
-                        {state}   
+                        { state.toUpperCase() }
                     </text>
-                </>
-
+                </g>
             );
         }
 
         else {
             renderPasses[0].push(
-                <path 
-                    key={state}
-                    id={state}
-                    d={map}
-                    className="state"
-                />
+                <g>
+                    <path 
+                        key={ state }
+                        id={ state }
+                        d={ map }
+                        className="state"
+                    />
+                </g>
             );
         }
     }
 
     return (
         <svg
-            
-            width="40%"
+            width="80%"
             viewBox="0 0 1000 620"
         >
             <g className="america-state-map">
