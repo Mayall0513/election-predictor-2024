@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 import { useRouter } from "next/router";
 
@@ -20,7 +21,7 @@ export default function Ribbon({ user }) {
                                     Sign out
                                 </button>
                             </div>
-                            <img className="avatar" width="64" height="64" src={user.avatar_url}/>
+                            <Image className="avatar" alt="User avatar" width="64" height="64" src={user.avatar_url} />
                         </> :
                         <button 
                             type="button" 
