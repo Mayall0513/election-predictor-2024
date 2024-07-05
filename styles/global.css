@@ -1,3 +1,19 @@
 body {
     background-color: #1b1e2b;
 }
+
+.america-state-map:hover .state {
+    opacity: 0.4;
+}
+
+.state {
+    fill: #494949;
+    stroke: #6a6a6a;
+    stroke-width: 1;
+}
+
+.state:hover {
+    opacity: 1 !important;
+    fill: #8a8a8a;
+    cursor: pointer;
+}

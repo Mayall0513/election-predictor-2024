@@ -1,11 +1,10 @@
-import users from '../data/users';
 import Ribbon from "../components/ribbon";
+
+import users from '../data/users';
 
 export default function Index(props) {
     return (
-        <>
-            <Ribbon user={props.user}/>
-        </>
+        <Ribbon user={props.user}/>
     );
 }
 
