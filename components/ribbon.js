@@ -2,9 +2,17 @@ import React from "react";
 import Image from "next/image";
 
 import { useRouter } from "next/router";
+import { usePathname } from 'next/navigation'
 
 export default function Ribbon({ user }) {
     const router = useRouter();
+    const pathname = usePathname();
+
+    const redirectParams = new URLSearchParams(
+        {
+            redirect_uri: pathname
+        }
+    );
 
     return (
         <div className="ribbon-container">
@@ -17,16 +25,16 @@ export default function Ribbon({ user }) {
                                 <button 
                                     type="button" 
                                     className="link-button"
-                                    onClick={(e) => router.replace("/api/auth/signout", undefined, { shallow: true }) }>
+                                    onClick={(e) => router.replace("/api/auth/signout?" + redirectParams.toString(), undefined, { shallow: true }) }>
                                     Sign out
                                 </button>
                             </div>
-                            <Image className="avatar" alt="User avatar" width="64" height="64" src={user.avatar_url} />
+                            <Image className="avatar" alt="User avatar" width="64" height="64" src={ user.avatar_url } />
                         </> :
                         <button 
                             type="button" 
                             className="link-button"
-                            onClick={(e) => router.replace("/api/auth/signin", undefined, { shallow: true }) }>
+                            onClick={(e) => router.replace("/api/auth/signin?" + redirectParams.toString(), undefined, { shallow: true }) }>
                             Sign in
                         </button>
                     }

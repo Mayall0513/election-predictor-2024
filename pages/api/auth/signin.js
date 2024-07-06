@@ -6,14 +6,21 @@ import helpers from '../../../helpers/api_helpers';
 
 function sendChallenge(req, res) {
     const statePlaintext = crypto.randomBytes(parseInt(process.env.AUTH_STATE_COOKIE_SIZE)).toString('hex');
-    const stateEncrypted = helpers.encrypt(statePlaintext, process.env.AUTH_STATE_COOKIE_SECRET);
+    const statePayload = JSON.stringify(
+        {
+            state: statePlaintext,
+            redirect_uri: req.query.redirect_uri
+        }
+    );
+
+    const stateEncrypted = helpers.encrypt(statePayload, process.env.AUTH_STATE_COOKIE_SECRET);
 
     helpers.setCookie(
         res,
         process.env.AUTH_STATE_COOKIE_NAME,
         stateEncrypted,
         helpers.generateCookieOptions(30 * 60, 'lax', '/api/auth/signin')
-    )
+    );
 
     const authoriseParams = new URLSearchParams(
         {
@@ -26,7 +33,7 @@ function sendChallenge(req, res) {
         }
     );
  
-    res.status(200).redirect(`${process.env.DISCORD_URL}/oauth2/authorize?${authoriseParams.toString()}`);
+    res.status(307).redirect(`${process.env.DISCORD_URL}/oauth2/authorize?${authoriseParams.toString()}`);
 }
 
 async function acquireToken(req, res) {
@@ -36,7 +43,7 @@ async function acquireToken(req, res) {
     );
 
     if (!stateEncrypted) {
-        return res.status(400).json("oauth2 code required");
+        return res.status(400).json("state cookie expired");
     }
 
     helpers.setCookie(
@@ -44,11 +51,17 @@ async function acquireToken(req, res) {
         process.env.AUTH_STATE_COOKIE_NAME,
         '',
         helpers.generateCookieOptions(-1)
-    )
+    );
 
     const statePlaintext = helpers.decrypt(stateEncrypted, process.env.AUTH_STATE_COOKIE_SECRET);
-    if (statePlaintext !== req.query.state) {
-        return res.status(403).json("oauth2 code invalid");
+    const state = helpers.parseJsonSafe(statePlaintext);
+
+    if (!state) {
+        return res.status(403).json("state invalid");
+    }
+
+    if (state.state !== req.query.state) {
+        return res.status(403).json("code invalid");
     }
 
     try {
@@ -114,14 +127,14 @@ async function acquireToken(req, res) {
             process.env.AUTH_COOKIE_NAME,
             token,
             helpers.generateCookieOptions(6 * 60 * 60)
-        )
+        );
 
-        return res.status(200).redirect(process.env.FRONTEND_URI);
+        return res.status(307).redirect(state.redirect_uri ?? process.env.FRONTEND_URI);
     }
 
     catch (error) {  }
 
-    return res.status(500).redirect(process.env.FRONTEND_URI);
+    return res.status(307).redirect(process.env.FRONTEND_URI);
 }
 
 export default async function signIn(req, res) {
