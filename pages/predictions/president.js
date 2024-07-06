@@ -7,7 +7,7 @@ export default function President(props) {
     return (
         <>
             <Ribbon user={props.user}/>
-            <AmericaStateMap />
+            <AmericaStateMap click={ async (id) => console.log(id) } />
         </>
     );
 }
