@@ -50,11 +50,11 @@ function encrypt(plaintext, key) {
 }
 
 function decrypt(encrypted, key) {
-    const encryptedParts = encrypted.split('.');
+    const parts = encrypted.split('.');
 
-    const iv = Buffer.from(encryptedParts[0], 'hex');
-    const encryptedValue = Buffer.from(encryptedParts[1], 'hex')
-    const tag = Buffer.from(encryptedParts[2], 'hex');
+    const iv = Buffer.from(parts[0], 'hex');
+    const encryptedValue = Buffer.from(parts[1], 'hex')
+    const tag = Buffer.from(parts[2], 'hex');
 
     const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
     decipher.setAuthTag(tag);
@@ -65,10 +65,21 @@ function decrypt(encrypted, key) {
     return decrypted;
 }
 
+function parseJsonSafe(string) {
+    try {
+        return JSON.parse(string);
+    }
+
+    catch (exception) {
+        return false;
+    }
+}
+
 export default {
     encrypt,
     decrypt,
     generateCookieOptions,
     getCookie,
-    setCookie
+    setCookie,
+    parseJsonSafe
 };
