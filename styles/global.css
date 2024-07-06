@@ -3,25 +3,27 @@ body {
 }
 
 .america-state-map:hover .state {
-    opacity: 0.4;
-
-    transition: 0.3s;
-}
-
-.state {
-    fill: #494949;
-    stroke: #6a6a6a;
-    stroke-width: 1;
+    opacity: 0.6;
 
     transition: 0.2s;
 }
 
+.state {
+    fill: #737373;
+    stroke: #212121;
+    stroke-width: 0.6;
+
+    transition: 0.1s;
+}
+
 .state:hover {
+    filter: brightness(1.6);
     opacity: 1 !important;
-    fill: #aaaaaa;
+
     cursor: pointer;
 }
 
 .state-panel-tooltip {
     pointer-events: none;
+    user-select: none;
 }
