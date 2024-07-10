@@ -40,7 +40,7 @@ export default function PredictionSentence({ predictionChanged }) {
 
     return (
         <div>
-            <span>I'm predicting </span>
+            <span>I&apos;m predicting </span>
             <span>
                 <DragDropdown 
                     options={ partiesOptions } 
