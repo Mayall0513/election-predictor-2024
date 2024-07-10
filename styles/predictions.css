@@ -1,0 +1,59 @@
+.safe-d {
+    fill: #344ee4;
+    color: #344ee4;
+}
+
+.likely-d {
+    fill: #4863ff;
+    color: #4863ff;
+}
+
+.lean-d {
+    fill: #8093ff;
+    color: #8093ff;
+}
+
+.tilt-d {
+    fill: #aab6ff;
+    color: #aab6ff;
+}
+
+.safe-r {
+    fill: #ff1b1b;
+    color: #ff1b1b;
+}
+
+.likely-r {
+    fill: #ff4848;
+    color: #ff4848;
+}
+
+.lean-r {
+    fill: #ff8080;
+    color: #ff8080;
+}
+
+.tilt-r {
+    fill: #ffbcbc;
+    color: #ffbcbc;
+}
+
+.safe-i {
+    fill: #ffdd1b;
+    color: #ffdd1b;
+}
+
+.likely-i {
+    fill: #ffd448;
+    color: #ffd448;
+}
+
+.lean-i {
+    fill: #ffd780;
+    color: #ffd780;
+}
+
+.tilt-i {
+    fill: #ffefbc;
+    color: #ffefbc;
+}
