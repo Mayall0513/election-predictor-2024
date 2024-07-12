@@ -3,7 +3,7 @@ body {
     background-color: #1b1e2b;
 }
 
-.america-state-map:hover .state {
+.state-map:hover .state {
     opacity: 0.6;
 
     transition: 0.2s;
@@ -27,7 +27,7 @@ body {
     user-select: none;
 }
 
-.swiper-dropdown {
+.drag-dropdown {
     display: inline-block;
     vertical-align: bottom;
     text-align: center;
@@ -38,17 +38,33 @@ body {
     transition: width 0.3s;
 }
 
-.swiper-dropdown:not(.swiper-dropdown-dragging) {
+.drag-dropdown:not(.drag-dropdown-dragging) {
     transition: transform 0.15s;
 }
 
-.swiper-dropdown-item {
+.drag-dropdown-item {
     list-style: none;
     user-select: none;
     cursor: pointer;
     width: fit-content
 }
 
-.justify-right {
+.drag-dropdown-item:not(.drag-dropdown-active) {
+    opacity: 0.75;
+}
+
+.drag-dropdown-item.drag-dropdown-active {
+    user-select: text;
+}
+
+.justify-right, .prediction-sentence-container {
     float: right;
+}
+
+.prediction-sentence {
+    font-size: larger;
+}
+
+.prediction-sentence-subtext {
+    font-size: small;
 }
