@@ -1,6 +1,12 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #1b1e2b;
+    background-color: #262b41;
+}
+
+.ribbon-container {
+    height: 6vh;
+    border-bottom-style: solid;
+    margin-bottom: 2vh;
 }
 
 .state-map:hover .state {
@@ -67,4 +73,34 @@ body {
 
 .prediction-sentence-subtext {
     font-size: small;
+}
+
+.electoral-college {
+    width: 50%;
+}
+
+.electoral-college-chart {
+    min-height: 20px;
+    border: 1px;
+    border-style: solid;
+    background-color: #737373;
+    margin-left: 4%;
+    margin-right: 4%;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.electoral-college-chart-group {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+
+    transition: width 0.25s;
+}
+
+.electoral-college-chart-element {
+    transition: width 0.25s;
 }
