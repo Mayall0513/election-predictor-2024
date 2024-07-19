@@ -12,8 +12,8 @@ const partiesOptions = [
         value: "r"
     },
     { 
-        display: "independent",
-        value: "i"
+        display: "other",
+        value: "o"
     }
 ];
 
@@ -50,7 +50,7 @@ export default function PredictionSentence({ predictionChanged }) {
     return (
         <div className="prediction-sentence-container">
             <div className="prediction-sentence">
-                <span>Left click to assign states as </span>
+                <span>Left click to assign </span>
                 <span>
                     <DragDropdown 
                         options={ likelihoodOptions } 
@@ -81,8 +81,9 @@ export default function PredictionSentence({ predictionChanged }) {
                         }}
                     />
                 </span>
+                <span> states</span>
             </div>
-            <span className="prediction-sentence-subtext">Right click to remove prediction</span>
+            <span className="prediction-sentence-subtext">Right click to remove</span>
         </div>
     );
 };

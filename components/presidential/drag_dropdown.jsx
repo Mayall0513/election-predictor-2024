@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 export default function SwiperDropdown({ options: _options, optionSelected, classes }) {
-    const optionElements = [  ];
+    const optionElements = [];
 
     const element = useRef(null);
     const dragYStart = useRef();
