@@ -1,129 +1,128 @@
 .safe-d {
-    
-    fill: #344ee4;
-    color: #344ee4;
+    fill: #354dda;
+    color: #354dda;
 }
 
 .safe-d.electoral-college-chart-element {
-    background-color: #344ee4;
+    background-color: #354dda;
 }
 
 
 
 .likely-d {
-    fill: #4863ff;
-    color: #4863ff;
+    fill: #4a62e9;
+    color: #4a62e9;
 }
 
 .likely-d.electoral-college-chart-element {
-    background-color: #4863ff;
+    background-color: #4a62e9;
 }
 
 
 
 .lean-d {
-    fill: #8093ff;
-    color: #8093ff;
+    fill: #94a4fc;
+    color: #94a4fc;
 }
 
 .lean-d.electoral-college-chart-element {
-    background-color: #8093ff;
+    background-color: #94a4fc;
 }
 
 
 
 .tilt-d {
-    fill: #aab6ff;
-    color: #aab6ff;
+    fill: #b9c3ff;
+    color: #b9c3ff;
 }
 
 .tilt-d.electoral-college-chart-element {
-    background-color: #aab6ff;
+    background-color: #b9c3ff;
 }
 
 
 
 .safe-r {
-    fill: #ff1b1b;
-    color: #ff1b1b;
+    fill: #e42323;
+    color: #e42323;
 }
 
 .safe-r.electoral-college-chart-element {
-    background-color: #ff1b1b;
+    background-color: #e42323;
 }
 
 
 
 .likely-r {
-    fill: #ff4848;
-    color: #ff4848;
+    fill: #fc5959;
+    color: #fc5959;
 }
 
 .likely-r.electoral-college-chart-element {
-    background-color: #ff4848;
+    background-color: #fc5959;
 }
 
 
 
 .lean-r {
-    fill: #ff8080;
-    color: #ff8080;
+    fill: #ffa1a1;
+    color: #ffa1a1;
 }
 
 .lean-r.electoral-college-chart-element {
-    background-color: #ff8080;
+    background-color: #ffa1a1;
 }
 
 
 .tilt-r {
-    fill: #ffbcbc;
-    color: #ffbcbc;
+    fill: #ffbebe;
+    color: #ffbebe;
 }
 
 .tilt-r.electoral-college-chart-element {
-    background-color: #ffbcbc;
+    background-color: #ffbebe;
 }
 
 
 
 .safe-o {
-    fill: #ffdd1b;
-    color: #ffdd1b;
+    fill: #ffbe0a;
+    color: #ffbe0a;
 }
 
 .safe-o.electoral-college-chart-element {
-    background-color: #ffdd1b;
+    background-color: #ffbe0a;
 }
  
 
 
 .likely-o {
-    fill: #ffd448;
-    color: #ffd448;
+    fill: #ffc46b;
+    color: #ffc46b;
 }
 
 .likely-o.electoral-college-chart-element {
-    background-color: #ffd448;
+    background-color: #ffc46b;
 }
 
 
 
 .lean-o {
-    fill: #ffd780;
-    color: #ffd780;
+    fill: #ffd5a4;
+    color: #ffd5a4;
 }
 
 .lean-o.electoral-college-chart-element {
-    background-color: #ffd780;
+    background-color: #ffd5a4;
 }
 
 
 
 .tilt-o {
-    fill: #ffefbc;
-    color: #ffefbc;
+    fill: #ffe1b4;
+    color: #ffe1b4;
 }
 
 .tilt-o.electoral-college-chart-element {
-    background-color: #ffefbc;
+    background-color: #ffe1b4;
 }
