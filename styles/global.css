@@ -80,12 +80,14 @@ body {
 }
 
 .electoral-college-chart {
-    min-height: 20px;
+    min-height: 16px;
     border: 1px;
     border-style: solid;
     background-color: #737373;
     margin-left: 4%;
     margin-right: 4%;
+
+    position: relative;
 
     display: flex;
     flex-flow: row nowrap;
@@ -94,11 +96,46 @@ body {
 }
 
 .electoral-college-chart-group {
+    position: relative;
+
     display: flex;
     flex-flow: row nowrap;
     align-items: stretch;
 
     transition: width 0.25s;
+}
+
+.electoral-college-chart-group.d {
+    justify-content: 'flex-start';
+}
+
+.electoral-college-chart-group.o {
+    justify-content: 'center';
+}
+
+.electoral-college-chart-group.r {
+    justify-content: 'flex-end';
+}
+
+.electoral-college-chart-center-indicator {
+    position: absolute;
+
+    left: 50%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+
+    height: 100%;
+    opacity: 0.8;
+}
+
+.electoral-college-chart-winner-indicator {
+    position: absolute;
+
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    background-color: black;
+    opacity: 0.6;
 }
 
 .electoral-college-chart-element {

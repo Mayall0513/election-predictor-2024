@@ -2,7 +2,7 @@ import React from "react";
 
 import { totalElectoralCollegeVotes, predictionEnumeration } from "../../data/elections";
 
-const distributionOrder = [
+const partyOrder = [
     'd',
     'o',
     'r'
@@ -31,7 +31,7 @@ export default function ElectoralCollegeChart({ predictions }) {
     }
 
     const distributionGroups = [];
-    for (const group of distributionOrder) {
+    for (const group of partyOrder) {
         let groupContent = [];
         let groupVotes = 0;
 
@@ -86,24 +86,10 @@ export default function ElectoralCollegeChart({ predictions }) {
 
         const percentage = Math.round((groupVotes / totalElectoralCollegeVotes) * 1000) / 10;
         const styles = { width: `${percentage}%` };
-
-        switch (group) {
-            case 'd':
-                styles.justifyContent = 'flex-start';
-            break;
-        
-            case 'r':
-                styles.justifyContent = 'flex-end';
-            break;
-
-            case 'o':
-                styles.justifyContent = 'center';
-            break;
-        }
         
         distributionGroups.push(
             <div 
-                className="electoral-college-chart-group" 
+                className={ `electoral-college-chart-group ${group}` }
                 style={ styles }
                 key={ `chart_group_${group}` }
             >
@@ -115,6 +101,7 @@ export default function ElectoralCollegeChart({ predictions }) {
     return (
         <div className="electoral-college-chart">
             { distributionGroups }
+            <div className="electoral-college-chart-center-indicator" />
         </div>
     );
 };
