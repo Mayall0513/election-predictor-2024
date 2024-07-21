@@ -41,7 +41,7 @@ export default function ElectoralCollegeChart({ predictions }) {
             }
 
             for (const { total, prediction } of distribution[group]) {
-                const percentage = Math.round((total / groupVotes) * 1000) / 10;
+                const percentage = Math.round((total / groupVotes) * 100000) / 1000;
 
                 /**
                  * Other must be handled discretely since it is in the centre
@@ -84,7 +84,7 @@ export default function ElectoralCollegeChart({ predictions }) {
             }
         }
 
-        const percentage = Math.round((groupVotes / totalElectoralCollegeVotes) * 1000) / 10;
+        const percentage = Math.round((groupVotes / totalElectoralCollegeVotes) * 100000) / 1000;
         const styles = { width: `${percentage}%` };
         
         distributionGroups.push(
