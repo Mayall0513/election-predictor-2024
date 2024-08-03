@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { usePathname } from 'next/navigation'
 
-export default function Ribbon({ user }) {
+export default function _ribbon({ user }) {
     const router = useRouter();
     const pathname = usePathname();
 

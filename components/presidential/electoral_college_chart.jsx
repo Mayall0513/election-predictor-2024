@@ -1,107 +1,134 @@
 import React from "react";
 
-import { totalElectoralCollegeVotes, predictionEnumeration } from "../../data/elections";
+import { totalElectoralCollegeVotes, presidentialStatesKeys, predictionEnumeration } from "../../data/elections";
 
-const partyOrder = [
-    'd',
-    'o',
-    'r'
-];
+export default function _electoralCollegeChart({ predictions, hoveredState }) {
+    const predictionsMetadata = {
+        predictionHover: null,
+        d: 0,
+        o: 0,
+        r: 0
+    };
 
-export default function ElectoralCollegeChart({ predictions }) {
-    const distribution = {};
     for (const prediction of predictionEnumeration) {
-        const predictionParty = prediction.split('-')[1];
-        let totalVotes = 0;
-
-        if (predictions && predictions[prediction]) {
-            for (const state of predictions[prediction]) {
-                totalVotes += state.votes;
-            }
-        }
-
-        if (!distribution[predictionParty]) {
-            distribution[predictionParty] = [];
-        }
-
-        distribution[predictionParty].push({
-            total: totalVotes,
-            prediction,
-        });
+        predictionsMetadata[prediction] = 0;
     }
 
-    const distributionGroups = [];
-    for (const group of partyOrder) {
-        let groupContent = [];
-        let groupVotes = 0;
+    const renderGroups = {
+        d: {
+           safe: [],
+           likely: [],
+           lean: [],
+           tilt: []
+        },
+        o: {
+            safe: [],
+            likely: [],
+            lean: [],
+            tilt: []
+        },
+        r: {
+            tilt: [],
+            lean: [],
+            likely: [],
+            safe: []
+        }
+    };
 
-        if (distribution[group]) {
-            for (const { total } of distribution[group]) {
-                groupVotes += total;
+    if (predictions) {
+        for (const state in predictions) {
+            const { prediction, votes } = predictions[state];
+            const [ _, party ] = prediction.split('-');
+
+            predictionsMetadata[prediction] += votes;
+            predictionsMetadata[party] += votes;
+        }
+
+        for (const state of presidentialStatesKeys) {
+            if (!predictions[state]) {
+                continue;
             }
 
-            for (const { total, prediction } of distribution[group]) {
-                const percentage = Math.round((total / groupVotes) * 100000) / 1000;
+            const { prediction, votes } = predictions[state];
+            const [ strength, party ] = prediction.split('-');
+            
+            const width = Math.round((votes / predictionsMetadata[prediction]) * 10000) / 100;
+            const style = { width: `${width}%` };
 
-                /**
-                 * Other must be handled discretely since it is in the centre
-                 * 
-                 * tilt/2 lean/2 likely/2 safe likely/2 lean/2 tilt/2
-                 */
-                if ('o' === group && 'safe-o' !== prediction) {
-                    groupContent.unshift(
-                        (
-                            <div
-                                className={ `electoral-college-chart-element ${prediction}` }
-                                key={ `chart_element_${prediction}_0` }
-                                style={{ width: `${percentage / 2}%` }}
-                            />
-                        )
-                    );
+            if (hoveredState && state === hoveredState) {
+                renderGroups[party][strength].push(
+                    <div
+                        className={ `chart-element ${prediction}` }
+                        key={ `element_${state}` }
+                        style={ style }
+                    />
+                );
+            }
 
-                    groupContent.push(
-                        (
-                            <div
-                                className={ `electoral-college-chart-element ${prediction}` }
-                                key={ `chart_element_${prediction}_1` }
-                                style={{ width: `${percentage / 2}%` }}
-                            />
-                        )
-                    );
-                }
+            else {
+                renderGroups[party][strength].push(
+                    <div
+                        className={ `chart-element chart-element-blur` }
+                        key={ `element_${state}` }
+                        style={ style }
+                    />
+                );
+            }
+        }
+    }
 
-                else {
-                    groupContent.push(
-                        (
-                            <div
-                                className={ `electoral-college-chart-element ${prediction}` }
-                                key={ `chart_element_${prediction}` }
-                                style={{ width: `${percentage}%` }}
-                            />
-                        )
-                    );
-                }
+    for (const index in renderGroups) {
+        const renderSubGroups = [];
+
+        for (const predictionStrength in renderGroups[index]) {
+            const prediction = `${predictionStrength}-${index}`;
+
+            const width = Math.round((predictionsMetadata[prediction] / predictionsMetadata[index]) * 10000) / 100;
+            const style = { width: `${width}%` };
+
+            if (hoveredState) {
+                renderSubGroups.push(
+                    <div 
+                        className={ `chart-subgroup chart-subgroup-blur ${prediction}` }
+                        key={ `subgroup_${prediction}` }
+                        style={ style }
+                    >
+                        { renderGroups[index][predictionStrength] }
+                    </div>
+                );
+            }
+
+            else {
+                renderSubGroups.push(
+                    <div 
+                        className={ `chart-subgroup ${prediction}` }
+                        key={ `subgroup_${prediction}` }
+                        style={ style }
+                    >
+                        { renderGroups[index][predictionStrength] }
+                    </div>
+                );
             }
         }
 
-        const percentage = Math.round((groupVotes / totalElectoralCollegeVotes) * 100000) / 1000;
-        const styles = { width: `${percentage}%` };
-        
-        distributionGroups.push(
-            <div 
-                className={ `electoral-college-chart-group ${group}` }
-                style={ styles }
-                key={ `chart_group_${group}` }
+        const width = Math.round((predictionsMetadata[index] / totalElectoralCollegeVotes) * 10000) / 100;
+        renderGroups[index] = (
+            <div
+                className="chart-group"
+                key={ `group_${index}` }
+                style={{
+                    width: `${width}%`
+                }}
             >
-                { groupContent }
-            </div>
+                { renderSubGroups }
+            </div>   
         );
     }
 
     return (
         <div className="electoral-college-chart">
-            { distributionGroups }
-            <div className="electoral-college-chart-center-indicator" />
+            { Object.values(renderGroups) }
+            <div className="chart-center-indicator" />
         </div>
     );
 };

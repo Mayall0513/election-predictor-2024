@@ -6,15 +6,15 @@ export const predictionEnumeration = [
     'lean-d',
     'tilt-d',
     
-    'tilt-r',
-    'lean-r',
-    'likely-r',
-    'safe-r',
-
     'safe-o',
     'likely-o',
     'lean-o',
-    'tilt-o'
+    'tilt-o',
+
+    'tilt-r',
+    'lean-r',
+    'likely-r',
+    'safe-r'
 ];
 
 export const predictionTranslations = {
@@ -356,3 +356,5 @@ export const presidentialStates = {
         votes: 3
     }
 };
+
+export const presidentialStatesKeys = Object.keys(presidentialStates);

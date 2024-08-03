@@ -5,7 +5,7 @@ const offset = {
     y: -14
 };
 
-export default function Tooltip({ contents }) {
+export default function _tooltip({ contents }) {
     const [ mouseCoordinates, setMouseCoordinates ] = useState({ x: 0, y: -1000 });
 
     const repositionTooltip = (event) => {
@@ -27,7 +27,6 @@ export default function Tooltip({ contents }) {
     return (
         <div className="tooltip" style={
             {
-                position: "fixed",
                 top: mouseCoordinates.y,
                 left: mouseCoordinates.x
             }

@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   reactStrictMode: true,
   swcMinify: true,
@@ -9,6 +11,11 @@ module.exports = {
         port: '',
         pathname: '/avatars/**'
       }
+    ]
+  },
+  sassOptions: {
+    includePaths: [
+      path.join(__dirname, 'styles')
     ]
   }
 }

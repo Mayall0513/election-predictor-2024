@@ -13,32 +13,47 @@ import { presidentialStates } from "../../data/elections";
 export default function President(props) {
     const [ currentPrediction, setCurrentPrediction ] = useState("tilt-d");
     const [ predictions, setPredictions ] = useState();
+    const [ hoveredState, setHoveredState ] = useState();
     const [ tooltipContents, setTooltipContents ] = useState();
 
     const onStateHovered = (key) => {
-        setTooltipContents(`${presidentialStates[key].name} (${presidentialStates[key].votes})`);
+        const tooltipText = presidentialStates[key].votes == 1
+            ? `${presidentialStates[key].votes} electoral vote`
+            : `${presidentialStates[key].votes} electoral votes`;
+
+        setHoveredState(key);
+        setTooltipContents(`${presidentialStates[key].name} (${tooltipText})`);
     }
 
     const onStateUnhovered = (key) => {
+        setHoveredState(null);
         setTooltipContents(null);
     }
 
     const saveElectoralCollegeMap = async () => {
-
         const htmlElement = document.querySelector('#electoral-college-group');
         const canvas = await html2canvas(htmlElement, { backgroundColor: null, scale: 4 });
+
         canvas.toBlob(async (blob) => {
-            const fileHandle = await window.showSaveFilePicker({ startIn: "downloads", suggestedName: "map", types: [{ accept: { "image/png": [ '.png' ]} }]});
-            const writeHandle = await fileHandle.createWritable();
-            await writeHandle.write(blob);
-            await writeHandle.close();
+            try {
+                const fileHandle = await window.showSaveFilePicker({ startIn: "downloads", suggestedName: "map", types: [{ accept: { "image/png": [ '.png' ]} }]});
+                const writeHandle = await fileHandle.createWritable();
+                await writeHandle.write(blob);
+                await writeHandle.close();
+            }
+
+            catch ({ name }) {
+                if ("AbortError" !== name) {
+                    throw error;
+                }
+            }
+
         });
     }
 
     return (
         <>
             <Ribbon user={ props.user } />
-            <Tooltip contents={ tooltipContents } />
             <PredictionSentence predictionChanged={ setCurrentPrediction } />
             <button 
                 type="button" 
@@ -47,9 +62,11 @@ export default function President(props) {
                 Save
             </button>
             <div id="electoral-college-group" className="electoral-college">
-                <ElectoralCollegeChart predictions={ predictions } />
+                <ElectoralCollegeChart predictions={ predictions } hoveredState={ hoveredState } />
                 <StateMap currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
             </div>
+            <Tooltip contents={ tooltipContents } />
+
         </>
     );
 }
