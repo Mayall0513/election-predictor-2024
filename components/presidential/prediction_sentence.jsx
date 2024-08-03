@@ -10,10 +10,6 @@ const partiesOptions = [
     {
         display: "Republican",
         value: "r"
-    },
-    { 
-        display: "other",
-        value: "o"
     }
 ];
 
@@ -32,7 +28,7 @@ const likelihoodOptions = [
     }
 ];
 
-export default function PredictionSentence({ predictionChanged }) {
+export default function _predictionSentence({ predictionChanged }) {
     const likelihoodPrediction = useRef('tilt');
     const partyPrediction = useRef('d');
 

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
-export default function SwiperDropdown({ options: _options, optionSelected, classes }) {
+export default function _swiperDropdown({ options: _options, optionSelected, classes }) {
     const optionElements = [];
 
     const element = useRef(null);
@@ -87,11 +87,11 @@ export default function SwiperDropdown({ options: _options, optionSelected, clas
             const optionElements = event.target.children;
             let widthOverride = 0;
 
-            if (optionElements[previousItemIndex]) {
+            if (previousItemIndex > 0 && optionElements[previousItemIndex]) {
                 widthOverride = optionElements[previousItemIndex].getBoundingClientRect().width;
             }
 
-            if (optionElements[nextItemIndex]) {
+            if (previousItemIndex <= optionElements.length && optionElements[nextItemIndex]) {
                 widthOverride = Math.max(widthOverride, optionElements[nextItemIndex].getBoundingClientRect().width);
             }
 
@@ -144,16 +144,15 @@ export default function SwiperDropdown({ options: _options, optionSelected, clas
         event.preventDefault();
     };
 
-    let i = 0;
-    for (const { display, value } of options) {
-        const optionIndex = i++;
+    for (let i = 0; i < options.length; i++) {
+        const { display, value } = options[i];
         const classes = [ "drag-dropdown-item" ];
 
         if (childClassName) {
             classes.push(childClassName);   
         }
 
-        if (optionIndex == activeItemIndex) {
+        if (i == activeItemIndex) {
             classes.push("drag-dropdown-active");
 
             if (activeClassName) {
@@ -164,8 +163,8 @@ export default function SwiperDropdown({ options: _options, optionSelected, clas
         const click = (event) => {
             event.preventDefault();
     
-            moveToElement(event, optionIndex);
-            selectOption(optionIndex, value);
+            moveToElement(event, i);
+            selectOption(i, value);
         }
 
         optionElements.push(

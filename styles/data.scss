@@ -1,0 +1,13 @@
+$prediction-colors: (
+    'safe-d':   #354dda,
+    'likely-d': #4a62e9,
+    'lean-d':   #94a4fc,
+    'tilt-d':   #b9c3ff,
+
+    'safe-r':   #e42323,
+    'likely-r': #fc5959,
+    'lean-r':   #ffa1a1,
+    'tilt-r':   #ffbebe
+);
+
+$blur-opacity-offset: 0.35;

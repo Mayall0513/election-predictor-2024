@@ -19,7 +19,7 @@ const smallStatePanels = {
     },
 };
 
-export default function StateMap({ currentPrediction, predictionChanged, onStateHovered: _onStateHovered, onStateUnhovered: _onStateUnhovered }) {
+export default function _stateMap({ currentPrediction, predictionChanged, onStateHovered: _onStateHovered, onStateUnhovered: _onStateUnhovered }) {
     const masks = {};
     const elements = [];
     const [ predictions, setPredictions ] = useState({});
@@ -40,7 +40,7 @@ export default function StateMap({ currentPrediction, predictionChanged, onState
             }
 
             else {
-                if (predictions[key]) {
+                if (null !== predictions[key]) {
                     stateChanged = true;
                 }
 
@@ -56,17 +56,11 @@ export default function StateMap({ currentPrediction, predictionChanged, onState
             for (const state in predictions) {
                 const prediction = predictionEnumeration[predictions[state]];
 
-                if (!predictionsWithMetadata[prediction]) {
-                    predictionsWithMetadata[prediction] = [];
-                }
-
-                predictionsWithMetadata[prediction].push(
-                    {
-                        state,
-                        name: states[state].name,
-                        votes: states[state].votes
-                    }
-                )
+                predictionsWithMetadata[state] = {
+                    prediction: prediction,
+                    name: states[state].name,
+                    votes: states[state].votes
+                };
             }
 
             predictionChanged(predictionsWithMetadata);
@@ -74,7 +68,7 @@ export default function StateMap({ currentPrediction, predictionChanged, onState
     }
     
     const stateEntries = Object.entries(states)
-    for (const [key, state] of stateEntries) {
+    for (const [ key, state ] of stateEntries) {
         if (state.parent) {
             if (!masks[state.parent]) {
                 masks[state.parent] = [];
