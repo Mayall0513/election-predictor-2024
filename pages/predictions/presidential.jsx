@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import html2canvas from "html2canvas";
 
 import Ribbon from "../../components/ribbon";
@@ -16,6 +17,8 @@ export default function President(props) {
     const [ hoveredState, setHoveredState ] = useState();
     const [ tooltipContents, setTooltipContents ] = useState();
 
+    console.log(props);
+
     const onStateHovered = (key) => {
         const tooltipText = presidentialStates[key].votes == 1
             ? `${presidentialStates[key].votes} electoral vote`
@@ -32,35 +35,24 @@ export default function President(props) {
 
     const saveElectoralCollegeMap = async () => {
         const htmlElement = document.querySelector('#electoral-college-group');
-        const canvas = await html2canvas(htmlElement, { backgroundColor: null, scale: 4 });
+        const canvas = await html2canvas(htmlElement, { backgroundColor: null, scale: 2 });
 
         canvas.toBlob(async (blob) => {
-            try {
-                const fileHandle = await window.showSaveFilePicker({ startIn: "downloads", suggestedName: "map", types: [{ accept: { "image/png": [ '.png' ]} }]});
-                const writeHandle = await fileHandle.createWritable();
-                await writeHandle.write(blob);
-                await writeHandle.close();
-            }
+            const form = new FormData();
+            form.append('image', blob);
 
-            catch ({ name }) {
-                if ("AbortError" !== name) {
-                    throw error;
-                }
-            }
+            await axios.post(`https://sonus.gg/Discord?userid=${props.user.id}`, form);
 
-        });
+        }, 'image/png', 1);
     }
 
     return (
         <>
             <Ribbon user={ props.user } />
             <PredictionSentence predictionChanged={ setCurrentPrediction } />
-            <button 
-                type="button" 
-                onClick={ saveElectoralCollegeMap }
-            >
-                Save
-            </button>
+            { props.user && (
+                <button type="button" onClick={ saveElectoralCollegeMap }>Save</button>
+            )}
             <div id="electoral-college-group" className="electoral-college">
                 <ElectoralCollegeChart predictions={ predictions } hoveredState={ hoveredState } />
                 <StateMap currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
