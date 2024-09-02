@@ -4,9 +4,7 @@ import { totalElectoralCollegeVotes, presidentialStatesKeys, predictionEnumerati
 
 export default function _electoralCollegeChart({ predictions, hoveredState }) {
     const predictionsMetadata = {
-        predictionHover: null,
         d: 0,
-        o: 0,
         r: 0
     };
 
@@ -20,12 +18,6 @@ export default function _electoralCollegeChart({ predictions, hoveredState }) {
            likely: [],
            lean: [],
            tilt: []
-        },
-        o: {
-            safe: [],
-            likely: [],
-            lean: [],
-            tilt: []
         },
         r: {
             tilt: [],
@@ -66,13 +58,26 @@ export default function _electoralCollegeChart({ predictions, hoveredState }) {
             }
 
             else {
-                renderGroups[party][strength].push(
-                    <div
-                        className={ `chart-element chart-element-blur` }
-                        key={ `element_${state}` }
-                        style={ style }
-                    />
-                );
+                if (hoveredState) {
+                    renderGroups[party][strength].push(
+                        <div
+                            className="chart-element chart-element-blur"
+                            key={ `element_${state}` }
+                            style={ style }
+                        />
+                    );
+                }
+
+                else {
+                    renderGroups[party][strength].push(
+                        <div
+                            className="chart-element"
+                            key={ `element_${state}` }
+                            style={ style }
+                        />
+                    ); 
+                }
+
             }
         }
     }
@@ -112,16 +117,17 @@ export default function _electoralCollegeChart({ predictions, hoveredState }) {
         }
 
         const width = Math.round((predictionsMetadata[index] / totalElectoralCollegeVotes) * 10000) / 100;
+        const style = { width: `${width}%` };
+
+
         renderGroups[index] = (
             <div
                 className="chart-group"
                 key={ `group_${index}` }
-                style={{
-                    width: `${width}%`
-                }}
+                style={ style }
             >
                 { renderSubGroups }
-            </div>   
+            </div>
         );
     }
 

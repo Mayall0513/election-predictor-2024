@@ -17,8 +17,6 @@ export default function President(props) {
     const [ hoveredState, setHoveredState ] = useState();
     const [ tooltipContents, setTooltipContents ] = useState();
 
-    console.log(props);
-
     const onStateHovered = (key) => {
         const tooltipText = presidentialStates[key].votes == 1
             ? `${presidentialStates[key].votes} electoral vote`
@@ -35,7 +33,7 @@ export default function President(props) {
 
     const saveElectoralCollegeMap = async () => {
         const htmlElement = document.querySelector('#electoral-college-group');
-        const canvas = await html2canvas(htmlElement, { backgroundColor: null, scale: 2 });
+        const canvas = await html2canvas(htmlElement, { backgroundColor: null, scale: 3 });
 
         canvas.toBlob(async (blob) => {
             const form = new FormData();
@@ -53,12 +51,16 @@ export default function President(props) {
             { props.user && (
                 <button type="button" onClick={ saveElectoralCollegeMap }>Save</button>
             )}
-            <div id="electoral-college-group" className="electoral-college">
-                <ElectoralCollegeChart predictions={ predictions } hoveredState={ hoveredState } />
-                <StateMap currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
-            </div>
             <Tooltip contents={ tooltipContents } />
+            <div id="electoral-college-group" className="electoral-college">
+                <span>
+                    <ElectoralCollegeChart predictions={ predictions } hoveredState={ hoveredState } />
+                </span>
+                <span>
+                    <StateMap currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
 
+                </span>
+            </div>
         </>
     );
 }

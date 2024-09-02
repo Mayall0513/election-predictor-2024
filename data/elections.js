@@ -1,4 +1,5 @@
 export const totalElectoralCollegeVotes = 538;
+export const electoralCollegeVotesToWin = totalElectoralCollegeVotes / 2 + 1;
 
 export const predictionEnumeration = [
     'safe-d',
