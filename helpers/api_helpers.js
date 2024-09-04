@@ -37,29 +37,31 @@ function setCookie(res, name, value, options) {
 }
 
 function encrypt(plaintext, key) {
+    const keyBytes = Buffer.from(key, 'hex');
+
     const iv = crypto.randomBytes(12);
-    const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
-    const encrypted = iv.toString('hex')
-        + '.'
-        + cipher.update(plaintext, 'utf8', 'hex')
-        + cipher.final('hex')
-        + '.'
-        + cipher.getAuthTag().toString('hex');
-    
-    return encrypted;
+    const cipher = crypto.createCipheriv('aes-256-gcm', keyBytes, iv);
+
+    const payload = cipher.update(plaintext, 'utf8', 'hex');
+    const final = cipher.final('hex');
+    const tag = cipher.getAuthTag().toString('hex');
+
+    return `${iv.toString('hex')}.${payload}${final}.${tag}`;
 }
 
 function decrypt(encrypted, key) {
     const parts = encrypted.split('.');
 
     const iv = Buffer.from(parts[0], 'hex');
-    const encryptedValue = Buffer.from(parts[1], 'hex')
+    const payload = Buffer.from(parts[1], 'hex')
     const tag = Buffer.from(parts[2], 'hex');
 
-    const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
+    const keyBytes = Buffer.from(key, 'hex');
+
+    const decipher = crypto.createDecipheriv('aes-256-gcm', keyBytes, iv);
     decipher.setAuthTag(tag);
 
-    const decrypted = decipher.update(encryptedValue, 'utf8', 'utf8')
+    const decrypted = decipher.update(payload, 'utf8', 'utf8')
         + decipher.final('utf8');
     
     return decrypted;

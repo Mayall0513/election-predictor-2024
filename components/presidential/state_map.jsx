@@ -23,6 +23,7 @@ export default function _stateMap({ currentPrediction, predictionChanged, onStat
     const masks = {};
     const elements = [];
     const [ predictions, setPredictions ] = useState({});
+
     let smallStatesAdded = 0;
 
     const onStateClicked = (event, key, leftClick) => {

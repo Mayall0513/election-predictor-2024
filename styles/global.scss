@@ -1,3 +1,4 @@
+@import "constants.scss";
 
 body {
     font-family: Arial, Helvetica, sans-serif;
@@ -11,17 +12,15 @@ body {
 }
 
 .state-map:hover .state {
-    opacity: 0.6;
-
-    transition: opacity 0.2s;
+    opacity: $map-not-hovered-opacity;
 }
 
 .state {
     fill: #737373;
     stroke: #212121;
-    stroke-width: 0.6;
+    stroke-width: 0.7;
 
-    transition: 0.1s;
+    transition: opacity 0.2s;
 }
 
 .state:hover {
@@ -61,15 +60,11 @@ body {
 }
 
 .drag-dropdown-item:not(.drag-dropdown-active) {
-    opacity: 0.75;
+    opacity: 0.8;
 }
 
 .drag-dropdown-item.drag-dropdown-active {
     user-select: text;
-}
-
-.justify-right, .prediction-sentence-container {
-    float: right;
 }
 
 .prediction-sentence {

@@ -1,3 +1,5 @@
+@import 'constants';
+
 .electoral-college-chart {
     min-height: 16px;
     border: 1px;
@@ -14,7 +16,7 @@
     align-items: stretch;
 }
 
-.chart-group {
+.electoral-college-chart .chart-group {
     position: relative;
 
     display: flex;
@@ -24,15 +26,12 @@
     transition: width 0.25s;
 }
 
-
-.chart-subgroup {
+.chart-group .chart-subgroup {
     display: flex;
     flex-flow: row nowrap;
-    align-items: stretch;
 }
 
-
-.chart-element {
+.chart-subgroup .chart-element {
     height: 100%;
 
     transition: width 0.25s;
@@ -43,8 +42,6 @@
     opacity: 0;
 }
 
-
-
 .chart-center-indicator {
     position: absolute; 
 
@@ -54,4 +51,16 @@
 
     height: 100%;
     opacity: 0.8;
+}
+
+.state-map:hover .electoral-college-chart {
+    opacity: $map-not-hovered-opacity;
+}
+
+.chart-group .chart-win-indicator {
+    position: absolute;
+
+    left: 50%;
+    top: calc(-100% - 2px);
+    transform: translateX(-50%);
 }

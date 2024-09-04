@@ -1,4 +1,4 @@
-@import 'data';
+@import 'constants';
 
 @each $prediction, $color in ($prediction-colors) {
     .#{$prediction} {

@@ -126,7 +126,14 @@ async function acquireToken(req, res) {
             res,
             process.env.AUTH_COOKIE_NAME,
             token,
-            helpers.generateCookieOptions(6 * 60 * 60)
+            helpers.generateCookieOptions(6 * 60 * 60, 'none')
+        );
+
+        helpers.setCookie(
+            res,
+            process.env.AUTH_COOKIE_NAME,
+            token,
+            helpers.generateCookieOptions(6 * 60 * 60, 'none')
         );
 
         return res.status(307).redirect(state.redirect_uri ?? process.env.FRONTEND_URI);
