@@ -34,12 +34,54 @@ export default function President(props) {
     const saveElectoralCollegeMap = async () => {
         const htmlElement = document.querySelector('#electoral-college-group');
         const canvas = await html2canvas(htmlElement, { backgroundColor: null, scale: 3 });
+        
+        const data = {
+            metadata: {
+                winner: null
+            },
+            states: {}
+        };
+
+        if (predictions) {
+            for (const state in predictions) {
+                const { prediction, votes } = predictions[state];
+                const [ strength, winner ] = prediction.split('-', 2);
+                
+                if (!data['metadata'][winner]) {
+                    data['metadata'][winner] = 0;
+                }
+
+                data['metadata'][winner] += votes;
+                if (data['metadata'][winner] > 269) {
+                    data['metadata']['winner'] = winner;
+                }
+
+                data['states'][state] = {
+                    winner,
+                    strength,
+                    votes
+                };
+            }
+        }
 
         canvas.toBlob(async (blob) => {
             const form = new FormData();
+
+            form.append('payload', JSON.stringify(data));
             form.append('image', blob);
 
-            await axios.post(`https://sonus.gg/Discord?userid=${props.user.id}`, form);
+            try {
+                await axios.post(
+                    `https://sonus.gg/Discord`, 
+                    form,
+                    {
+                        withCredentials: true
+                    }
+                );
+            }
+
+            catch (error) { console.error(error); }
+
 
         }, 'image/png', 1);
     }
@@ -58,7 +100,6 @@ export default function President(props) {
                 </span>
                 <span>
                     <StateMap currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
-
                 </span>
             </div>
         </>
