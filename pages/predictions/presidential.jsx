@@ -62,28 +62,28 @@ export default function President(props) {
                     votes
                 };
             }
+
+            canvas.toBlob(async (blob) => {
+                const form = new FormData();
+    
+                form.append('payload', JSON.stringify(data));
+                form.append('image', blob);
+    
+                try {
+                    await axios.post(
+                        '/api/predict/presidential', 
+                        form,
+                        {
+                            withCredentials: true
+                        }
+                    );
+                }
+    
+                catch (error) { console.error(error); }
+    
+    
+            }, 'image/png', 1);
         }
-
-        canvas.toBlob(async (blob) => {
-            const form = new FormData();
-
-            form.append('payload', JSON.stringify(data));
-            form.append('image', blob);
-
-            try {
-                await axios.post(
-                    `https://sonus.gg/Discord`, 
-                    form,
-                    {
-                        withCredentials: true
-                    }
-                );
-            }
-
-            catch (error) { console.error(error); }
-
-
-        }, 'image/png', 1);
     }
 
     return (
