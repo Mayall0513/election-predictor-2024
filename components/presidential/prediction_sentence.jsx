@@ -45,7 +45,7 @@ export default function _predictionSentence({ setTooltip, predictionChanged }) {
     };
 
     const tooltip = (
-        <div class="tooltip-panel">
+        <div className="tooltip-panel">
             <ul>
                 <li>Tilt: 0-2%</li>
                 <li>Lean: 2-5%</li>
