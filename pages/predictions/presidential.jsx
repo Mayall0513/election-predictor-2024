@@ -89,7 +89,7 @@ export default function President(props) {
     return (
         <>
             <Ribbon user={ props.user } />
-            <PredictionSentence predictionChanged={ setCurrentPrediction } />
+            <PredictionSentence predictionChanged={ setCurrentPrediction } setTooltip={ setTooltipContents } />
             { props.user && (
                 <button type="button" onClick={ saveElectoralCollegeMap }>Save</button>
             )}
