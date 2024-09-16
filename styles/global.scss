@@ -30,6 +30,7 @@ body {
 
 .tooltip {
     position: fixed;
+    z-index: 100;
 }
 
 .state-panel-tooltip {
@@ -76,5 +77,21 @@ body {
 }
 
 .electoral-college {
+    float: right;
     width: 50%;
+}
+
+.hint-mark {
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    background-color: #171b2c;
+    border-radius: 0.5em;
+    text-align: center;
+    width: 1em;
+    height: 1em;
+}
+
+.tooltip-panel {
+    background-color: #737373;
 }

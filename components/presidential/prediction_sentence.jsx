@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 
 import DragDropdown from "./drag_dropdown";
+import HintMark from "../hint_mark";
 
 const partiesOptions = [
     {
@@ -28,7 +29,7 @@ const likelihoodOptions = [
     }
 ];
 
-export default function _predictionSentence({ predictionChanged }) {
+export default function _predictionSentence({ setTooltip, predictionChanged }) {
     const likelihoodPrediction = useRef('tilt');
     const partyPrediction = useRef('d');
 
@@ -42,6 +43,17 @@ export default function _predictionSentence({ predictionChanged }) {
             predictionChanged(prediction);
         }
     };
+
+    const tooltip = (
+        <div class="tooltip-panel">
+            <ul>
+                <li>Tilt: 0-2%</li>
+                <li>Lean: 2-5%</li>
+                <li>Likely: 5-10%</li>
+                <li>Safe: &gt;10%</li>
+            </ul>
+        </div>
+    );
 
     return (
         <div className="prediction-sentence-container">
@@ -62,6 +74,8 @@ export default function _predictionSentence({ predictionChanged }) {
                         }}
                     />
                 </span>
+                &nbsp;
+                <HintMark setTooltip={setTooltip} tooltip={tooltip} />
                 &nbsp;
                 <span>
                     <DragDropdown 
