@@ -5,9 +5,17 @@ body {
     background-color: #262b41;
 }
 
+.ribbon {
+    min-height: 64px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .ribbon-container {
-    height: 6vh;
     border-bottom-style: solid;
+    padding: 0px 16px 8px 16px;
     margin-bottom: 2vh;
 }
 
@@ -93,5 +101,44 @@ body {
 }
 
 .tooltip-panel {
-    background-color: #737373;
+    border-radius: 4px;
+    background-color: #7c7c7c;
+    padding: 6px;
+}
+
+.prediction-tooltip-list {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.prediction-tooltip-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.prediction-tooltip-list-item > span:not(:first-child) {
+    padding-left: 8px;
+}
+
+.prediction-tooltip-list-item:not(:first-child) {
+    padding-top: 2px;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.avatar {
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+}
+
+.ribbon-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px
 }
