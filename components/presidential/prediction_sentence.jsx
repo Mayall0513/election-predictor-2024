@@ -46,11 +46,23 @@ export default function _predictionSentence({ setTooltip, predictionChanged }) {
 
     const tooltip = (
         <div className="tooltip-panel">
-            <ul>
-                <li>Tilt: 0-2%</li>
-                <li>Lean: 2-5%</li>
-                <li>Likely: 5-10%</li>
-                <li>Safe: &gt;10%</li>
+            <ul className="prediction-tooltip-list">
+                <li className="prediction-tooltip-list-item">
+                    <span className={ "tilt-" + partyPrediction.current }>Tilt</span> 
+                    <span>0-1%</span>
+                </li>
+                <li className="prediction-tooltip-list-item">
+                    <span className={ "lean-" + partyPrediction.current }>Lean</span> 
+                    <span>1-5%</span>
+                </li>
+                <li className="prediction-tooltip-list-item">
+                    <span className={ "likely-" + partyPrediction.current }>Likely</span> 
+                    <span>5-10%</span>
+                </li>
+                <li className="prediction-tooltip-list-item">
+                    <span className={ "safe-" + partyPrediction.current }>Safe</span> 
+                    <span>&gt;10%</span>
+                </li>
             </ul>
         </div>
     );
