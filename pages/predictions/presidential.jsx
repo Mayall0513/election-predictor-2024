@@ -19,7 +19,7 @@ export default function President(props) {
     const { user, previousPrediction } = props;
     
     const [ currentPrediction, setCurrentPrediction ] = useState("tilt-d");
-    const [ predictions, setPredictions ] = useState(startPredictions);
+    const [ predictions, setPredictions ] = useState();
     const [ hoveredState, setHoveredState ] = useState();
     const [ tooltipContents, setTooltipContents ] = useState();
 
@@ -47,7 +47,6 @@ export default function President(props) {
     if (previousPrediction && previousPrediction.states) {
         for (const state in previousPrediction.states) {
             const { winner, strength, votes } = previousPrediction.states[state];
-            
             const prediction = `${strength}-${winner}`;
 
             startPredictions[state] = {
@@ -56,6 +55,10 @@ export default function President(props) {
             };
 
             mapStartPredictions[state] = predictionMap[prediction];
+        }
+
+        if (!predictions) {
+            setPredictions(startPredictions);
         }
     }
 
