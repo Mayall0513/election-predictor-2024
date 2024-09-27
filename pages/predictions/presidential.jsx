@@ -18,6 +18,11 @@ import { predictionMap } from "../../data/elections";
 export default function President(props) {
     const { user, previousPrediction } = props;
     
+    const [ currentPrediction, setCurrentPrediction ] = useState("tilt-d");
+    const [ predictions, setPredictions ] = useState(startPredictions);
+    const [ hoveredState, setHoveredState ] = useState();
+    const [ tooltipContents, setTooltipContents ] = useState();
+
     if (!user) {
         return (
             <>
@@ -53,11 +58,6 @@ export default function President(props) {
             mapStartPredictions[state] = predictionMap[prediction];
         }
     }
-
-    const [ currentPrediction, setCurrentPrediction ] = useState("tilt-d");
-    const [ predictions, setPredictions ] = useState(startPredictions);
-    const [ hoveredState, setHoveredState ] = useState();
-    const [ tooltipContents, setTooltipContents ] = useState();
 
     const onStateHovered = (key) => {
         const tooltipText = presidentialStates[key].votes == 1
