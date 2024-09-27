@@ -11,11 +11,53 @@ import Tooltip from "../../components/tooltip";
 import users from '../../data/users';
 import { presidentialStates } from "../../data/elections";
 
+import helpers from '../../helpers/api_helpers';
+
+import { predictionMap } from "../../data/elections";
+
 export default function President(props) {
+    const { user, previousPrediction } = props;
+    
     const [ currentPrediction, setCurrentPrediction ] = useState("tilt-d");
-    const [ predictions, setPredictions ] = useState();
+    const [ predictions, setPredictions ] = useState(startPredictions);
     const [ hoveredState, setHoveredState ] = useState();
     const [ tooltipContents, setTooltipContents ] = useState();
+
+    if (!user) {
+        return (
+            <>
+                <Ribbon />
+                <p>Please sign in</p>
+            </>
+        );
+    }
+
+    if (!user.on_correct_server) {
+        return (
+            <>
+                <Ribbon user = { user }/>
+                <p>Please join r/Conservative</p>
+            </> 
+        );
+    }
+
+    const startPredictions = {};
+    const mapStartPredictions = {};
+
+    if (previousPrediction && previousPrediction.states) {
+        for (const state in previousPrediction.states) {
+            const { winner, strength, votes } = previousPrediction.states[state];
+            
+            const prediction = `${strength}-${winner}`;
+
+            startPredictions[state] = {
+                prediction,
+                votes
+            };
+
+            mapStartPredictions[state] = predictionMap[prediction];
+        }
+    }
 
     const onStateHovered = (key) => {
         const tooltipText = presidentialStates[key].votes == 1
@@ -79,18 +121,18 @@ export default function President(props) {
                     );
                 }
     
-                catch (error) { console.error(error); }
-    
-    
+                catch (error) {
+                    console.error(error);
+                }
             }, 'image/png', 1);
         }
     }
 
     return (
         <>
-            <Ribbon user={ props.user } />
+            <Ribbon user={ user } />
             <PredictionSentence predictionChanged={ setCurrentPrediction } setTooltip={ setTooltipContents } />
-            { props.user && (
+            { user && (
                 <button type="button" onClick={ saveElectoralCollegeMap }>Save</button>
             )}
             <Tooltip contents={ tooltipContents } />
@@ -99,7 +141,7 @@ export default function President(props) {
                     <ElectoralCollegeChart predictions={ predictions } hoveredState={ hoveredState } />
                 </span>
                 <span>
-                    <StateMap currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
+                    <StateMap startPrediction={ mapStartPredictions } currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
                 </span>
             </div>
         </>
@@ -107,11 +149,36 @@ export default function President(props) {
 }
 
 export async function getServerSideProps(context) {
-    const user = users.getUser(context);
+    const { req } = context;
+
+    const user = await users.getUser(context);
+    const tokenCookie = helpers.getCookie(req, process.env.AUTH_COOKIE_NAME);
+
+    let previousPrediction = null;
+
+    try {
+        const { data: serverPreviousPrediction } = await axios.get(
+            process.env.BACKEND_URI + "/President",
+            {
+                headers: {
+                    cookie: process.env.AUTH_COOKIE_NAME + "=" + tokenCookie + ";"
+                }
+            }
+        );
+
+        if (serverPreviousPrediction) {
+            previousPrediction = serverPreviousPrediction;
+        }
+    }
+
+    catch (error) {
+        console.error(error);
+    }
 
     return {
         props: {
-            user: user
+            user,
+            previousPrediction
         }
     };
 }

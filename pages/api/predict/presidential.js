@@ -66,7 +66,7 @@ export default async function presidential(req, res) {
 
     try {
         await axios.post(
-            process.env.BACKEND_URI + "/Discord",
+            process.env.BACKEND_URI + "/President",
             cleanForm,
             {
                 headers: {

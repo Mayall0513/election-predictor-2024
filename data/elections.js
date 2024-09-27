@@ -6,11 +6,6 @@ export const predictionEnumeration = [
     'likely-d',
     'lean-d',
     'tilt-d',
-    
-    'safe-o',
-    'likely-o',
-    'lean-o',
-    'tilt-o',
 
     'tilt-r',
     'lean-r',

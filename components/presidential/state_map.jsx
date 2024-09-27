@@ -19,16 +19,15 @@ const smallStatePanels = {
     },
 };
 
-export default function _stateMap({ currentPrediction, predictionChanged, onStateHovered: _onStateHovered, onStateUnhovered: _onStateUnhovered }) {
+export default function _stateMap({ startPrediction, currentPrediction, predictionChanged, onStateHovered: _onStateHovered, onStateUnhovered: _onStateUnhovered }) {
     const masks = {};
     const elements = [];
-    const [ predictions, setPredictions ] = useState({});
+    const [ predictions, setPredictions ] = useState(startPrediction || {});
 
     let smallStatesAdded = 0;
 
     const onStateClicked = (event, key, leftClick) => {
         event.preventDefault();
-
         let stateChanged = false;
 
         if (currentPrediction) {

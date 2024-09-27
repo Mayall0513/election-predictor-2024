@@ -9,7 +9,7 @@ export default function Index(props) {
 }
 
 export async function getServerSideProps(context) {
-    const user = users.getUser(context);
+    const user = await users.getUser(context);
 
     return {
         props: {

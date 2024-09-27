@@ -1,6 +1,8 @@
 import helpers from '../helpers/api_helpers';
 
-function getUser({ req }) {
+import axios from 'axios';
+
+async function getUser({ req }) {
 	if (!req.cookies[process.env.AUTH_COOKIE_NAME]) {
 		return null;
 	}
@@ -11,11 +13,31 @@ function getUser({ req }) {
 
 		const { id, username, avatar_url, discriminator } = JSON.parse(token);
 
+		let on_correct_server = false;
+		
+		try {
+			const discordAuthentication = await axios.get(
+				process.env.BACKEND_URI + "/Discord",
+				{
+					headers: {
+						cookie: process.env.AUTH_COOKIE_NAME + "=" + tokenCookie + ";"
+					}
+				}
+			);
+
+			on_correct_server = discordAuthentication.data;
+		}
+	
+		catch (error) {
+			console.error(error);
+		}
+
 		return { 
 			id, 
 			username, 
 			avatar_url,
-			discriminator
+			discriminator,
+			on_correct_server
 		};
 	}
 	
