@@ -5,7 +5,7 @@ import { IncomingForm } from 'formidable';
 
 import helpers from '../../../helpers/api_helpers';
 
-export default async function presidential(req, res) {
+export default async function _presidential(req, res) {
     if (req.method != "POST") {
         res.status(400).json("bad request");
         return;

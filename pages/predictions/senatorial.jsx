@@ -9,13 +9,11 @@ import ElectoralCollegeChart from "../../components/presidential/electoral_colle
 import Tooltip from "../../components/tooltip";
 
 import users from '../../data/users';
-import { presidentialStates } from "../../data/elections";
+import { senatorialStates, predictionMap } from "../../data/elections";
 
 import helpers from '../../helpers/api_helpers';
 
-import { predictionMap } from "../../data/elections";
-
-export default function _presidential(props) {
+export default function _senatorial(props) {
     const { user, previousPrediction } = props;
     
     const [ currentPrediction, setCurrentPrediction ] = useState("tilt-d");
@@ -63,12 +61,10 @@ export default function _presidential(props) {
     }
 
     const onStateHovered = (key) => {
-        const tooltipText = presidentialStates[key].votes == 1
-            ? `${presidentialStates[key].votes} electoral vote`
-            : `${presidentialStates[key].votes} electoral votes`;
-
-        setHoveredState(key);
-        setTooltipContents(`${presidentialStates[key].name} (${tooltipText})`);
+        if (!senatorialStates[key].disabled) {
+            setHoveredState(key);
+            setTooltipContents(`${senatorialStates[key].name}`);
+        }
     }
 
     const onStateUnhovered = (key) => {
@@ -141,10 +137,10 @@ export default function _presidential(props) {
             <Tooltip contents={ tooltipContents } />
             <div id="electoral-college-group" className="electoral-college">
                 <span>
-                    <ElectoralCollegeChart predictions={ predictions } hoveredState={ hoveredState } />
+                    {/* <ElectoralCollegeChart predictions={ predictions } hoveredState={ hoveredState } /> */}
                 </span>
                 <span>
-                    <StateMap states={ presidentialStates } startPrediction={ mapStartPredictions } currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
+                    <StateMap states={ senatorialStates } startPrediction={ mapStartPredictions } currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
                 </span>
             </div>
         </>
@@ -161,7 +157,7 @@ export async function getServerSideProps(context) {
 
     try {
         const { data: serverPreviousPrediction } = await axios.get(
-            process.env.BACKEND_URI + "/President",
+            process.env.BACKEND_URI + "/Senate",
             {
                 headers: {
                     cookie: process.env.AUTH_COOKIE_NAME + "=" + tokenCookie + ";"
