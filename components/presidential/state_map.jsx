@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-import { predictionEnumeration, predictionMap, presidentialStates as states } from "../../data/elections";
+import { predictionEnumeration, predictionMap } from "../../data/elections";
 
 const smallStatePanels = {
     dimensions: {
@@ -19,7 +19,7 @@ const smallStatePanels = {
     },
 };
 
-export default function _stateMap({ startPrediction, currentPrediction, predictionChanged, onStateHovered: _onStateHovered, onStateUnhovered: _onStateUnhovered }) {
+export default function _stateMap({ states, startPrediction, currentPrediction, predictionChanged, onStateHovered: _onStateHovered, onStateUnhovered: _onStateUnhovered }) {
     const masks = {};
     const elements = [];
     const [ predictions, setPredictions ] = useState(startPrediction || {});
@@ -133,6 +133,22 @@ export default function _stateMap({ startPrediction, currentPrediction, predicti
                     </text>
                 </g>
             );
+        }
+
+        else if (state.disabled) {
+            elements.push(
+                <path 
+                    key={ key }
+                    id={ key }
+                    d={ state.path }
+                    className={ "state" + prediction + " state-disabled"}
+                    onPointerEnter={ () => _onStateHovered && _onStateHovered(key) }
+                    onPointerLeave={ () => _onStateUnhovered && _onStateUnhovered(key) }
+                    onClick={ (event) => onStateClicked(event, key, true) }
+                    onContextMenu={ (event) => onStateClicked(event, key, false) }
+                    mask={ masks[key] ? `url(#${key}_mask)` : null }
+                />
+            ); 
         }
 
         else {

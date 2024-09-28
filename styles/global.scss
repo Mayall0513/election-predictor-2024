@@ -19,8 +19,12 @@ body {
     margin-bottom: 2vh;
 }
 
-.state-map:hover .state {
+.state-map:hover:not(.state-disabled) .state:not(.state-disabled) {
     opacity: $map-not-hovered-opacity;
+}
+
+.state-disabled {
+    opacity: $map-disabled-opacity;
 }
 
 .state {
@@ -31,7 +35,7 @@ body {
     transition: opacity 0.2s;
 }
 
-.state:hover {
+.state:hover:not(.state-disabled) {
     opacity: 1 !important;
     cursor: pointer;
 }
