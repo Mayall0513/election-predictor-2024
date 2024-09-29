@@ -19,6 +19,12 @@ body {
     margin-bottom: 2vh;
 }
 
+.state-map-container {
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .state-map:hover:not(.state-disabled) .state:not(.state-disabled) {
     opacity: $map-not-hovered-opacity;
 }
@@ -78,6 +84,11 @@ body {
 
 .drag-dropdown-item.drag-dropdown-active {
     user-select: text;
+}
+
+.prediction-sentence-container {
+    margin-top: 4em;
+    margin-bottom: 4em;
 }
 
 .prediction-sentence {
@@ -144,5 +155,5 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 12px
+    gap: 8px
 }

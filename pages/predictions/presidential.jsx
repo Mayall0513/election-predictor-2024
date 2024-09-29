@@ -139,13 +139,9 @@ export default function _presidential(props) {
                 <button type="button" onClick={ saveElectoralCollegeMap }>Save</button>
             )}
             <Tooltip contents={ tooltipContents } />
-            <div id="electoral-college-group" className="electoral-college">
-                <span>
-                    <ElectoralCollegeChart predictions={ predictions } hoveredState={ hoveredState } />
-                </span>
-                <span>
-                    <StateMap states={ presidentialStates } startPrediction={ mapStartPredictions } currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
-                </span>
+            <div id="electoral-college-group" className="state-map-container">
+                <ElectoralCollegeChart predictions={ predictions } hoveredState={ hoveredState } />
+                <StateMap states={ presidentialStates } startPrediction={ mapStartPredictions } currentPrediction={ currentPrediction } predictionChanged={ setPredictions } onStateHovered={ onStateHovered } onStateUnhovered={ onStateUnhovered } />
             </div>
         </>
     );
