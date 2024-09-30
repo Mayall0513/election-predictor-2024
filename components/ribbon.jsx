@@ -52,7 +52,7 @@ export default function _ribbon({ user }) {
         ribbon_items.push(
             <div className="ribbon-item" key="centre">
                 <Link href="/predictions/presidential">Presidential</Link>
-                <Link href="/predictions/senatorial">Sentorial</Link>
+                <Link href="/predictions/senatorial">Senatorial</Link>
             </div>
         );
 

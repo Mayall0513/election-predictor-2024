@@ -9,7 +9,7 @@ export default function _tooltip({ contents }) {
     const [ mouseCoordinates, setMouseCoordinates ] = useState({ x: 0, y: -1000 });
 
     const repositionTooltip = (event) => {
-        setMouseCoordinates({ x: event.pageX + offset.x, y: event.pageY + offset.y });
+        setMouseCoordinates({ x: event.screenX + offset.x, y: event.screenY + offset.y });
     }
 
     useEffect(() => {
