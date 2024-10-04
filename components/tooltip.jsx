@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 
 const offset = {
-    x: 14,
-    y: -14
+    x: 12,
+    y: -12
 };
 
 export default function _tooltip({ contents }) {
     const [ mouseCoordinates, setMouseCoordinates ] = useState({ x: 0, y: -1000 });
 
     const repositionTooltip = (event) => {
-        setMouseCoordinates({ x: event.screenX + offset.x, y: event.screenY + offset.y });
+        setMouseCoordinates({ x: event.clientX + offset.x, y: event.clientY + offset.y });
     }
 
     useEffect(() => {

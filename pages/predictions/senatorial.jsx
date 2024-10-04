@@ -5,7 +5,6 @@ import html2canvas from "html2canvas";
 import Ribbon from "../../components/ribbon";
 import StateMap from "../../components/presidential/state_map";
 import PredictionSentence from "../../components/presidential/prediction_sentence";
-import ElectoralCollegeChart from "../../components/presidential/electoral_college_chart";
 import Tooltip from "../../components/tooltip";
 
 import users from '../../data/users';
@@ -144,6 +143,20 @@ export default function _senatorial(props) {
 }
 
 export async function getServerSideProps(context) {
+    /**
+     * Senatorial is currently only enabled for DEV
+     */
+    console.log(process.env);
+
+    // if ("DEV" != process.env.ENVIRONMENT) {
+    //     return {
+    //         redirect: {
+    //             permanent: true,
+    //             destination: '/404'
+    //         }
+    //     };
+    // }
+
     const { req } = context;
 
     const user = await users.getUser(context);
