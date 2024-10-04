@@ -26,8 +26,8 @@ export default function _ribbon({ user }) {
 
         ribbon_items.push(
             <div className="ribbon-item" key="centre">
-                <Link href="/predictions/presidential">Presidential</Link>
-                <Link href="/predictions/senatorial">Senatorial</Link>
+                <Link className="ribbon-item-link" href="/predictions/presidential">Presidential</Link>
+                {/* <Link href="/predictions/senatorial">Senatorial</Link> */}
             </div>
         );
 
@@ -51,8 +51,8 @@ export default function _ribbon({ user }) {
 
         ribbon_items.push(
             <div className="ribbon-item" key="centre">
-                <Link href="/predictions/presidential">Presidential</Link>
-                <Link href="/predictions/senatorial">Senatorial</Link>
+                <Link className="ribbon-item-link" href="/predictions/presidential">Presidential</Link>
+                {/* <Link href="/predictions/senatorial">Senatorial</Link> */}
             </div>
         );
 
