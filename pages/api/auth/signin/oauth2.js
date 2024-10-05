@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 
 import axios from 'axios';
 
-import helpers from '../../../helpers/api_helpers';
+import helpers from '../../../../helpers/api_helpers';
 
 function sendChallenge(req, res) {
     const statePlaintext = crypto.randomBytes(parseInt(process.env.AUTH_STATE_COOKIE_SIZE)).toString('hex');
@@ -19,7 +19,7 @@ function sendChallenge(req, res) {
         res,
         process.env.AUTH_STATE_COOKIE_NAME,
         stateEncrypted,
-        helpers.generateCookieOptions(30 * 60, 'lax', '/api/auth/signin')
+        helpers.generateCookieOptions(30 * 60, 'lax', '/api/auth/signin/oauth2')
     );
 
     const authoriseParams = new URLSearchParams(
@@ -28,7 +28,7 @@ function sendChallenge(req, res) {
             scope: process.env.DISCORD_AUTH_SCOPE,
             client_id: process.env.DISCORD_CLIENT_ID,
             prompt: 'consent',
-            redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
+            redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin/oauth2`,
             state: statePlaintext
         }
     );
@@ -77,7 +77,7 @@ async function acquireToken(req, res) {
                 client_secret: process.env.DISCORD_CLIENT_SECRET,
                 grant_type: 'authorization_code',
                 code: req.query.code,
-                redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin`,
+                redirect_uri: `${process.env.FRONTEND_URI}/api/auth/signin/oauth2`,
                 scope: process.env.DISCORD_AUTH_SCOPE,
             }
         );
@@ -132,12 +132,15 @@ async function acquireToken(req, res) {
         return res.status(307).redirect(state.redirect_uri ?? process.env.FRONTEND_URI);
     }
 
-    catch (error) {  }
+    catch (error) { 
+        console.error(error);
+        return res.status(500).json("internal server error");
+    }
 
     return res.status(307).redirect(process.env.FRONTEND_URI);
 }
 
-export default async function signIn(req, res) {
+export default async function _auth_oauth2(req, res) {
     req.query.code && req.query.state
         ? await acquireToken(req, res)
         : sendChallenge(req, res);
