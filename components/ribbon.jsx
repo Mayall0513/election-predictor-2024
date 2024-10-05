@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { usePathname } from 'next/navigation'
 import Link from "next/link";
 
-export default function _ribbon({ user }) {
+export default function _ribbon({ user, signinPage, redirect }) {
     const router = useRouter();
     const pathname = usePathname();
 
@@ -56,16 +56,37 @@ export default function _ribbon({ user }) {
             </div>
         );
 
-        ribbon_items.push(
-            <div className="ribbon-item" key="right">
-                <button 
-                    type="button" 
-                    className="link-button justify-right"
-                    onClick={(e) => router.replace("/api/auth/signin?" + redirect_params.toString(), undefined, { shallow: true }) }>
-                    Sign in
-                </button>
-            </div>
-        );
+        if (signinPage) {
+            if (redirect) {
+                ribbon_items.push(
+                    <div className="ribbon-item" key="right">
+                        <button 
+                            type="button" 
+                            className="link-button justify-right"
+                            onClick={(e) => router.replace(redirect, undefined) }>
+                            Go back
+                        </button>
+                    </div>
+                );
+            }
+
+            else {
+                ribbon_items.push(<div className="ribbon-item" key="right"></div>);
+            }
+        }
+
+        else {
+            ribbon_items.push(
+                <div className="ribbon-item" key="right">
+                    <button 
+                        type="button" 
+                        className="link-button justify-right"
+                        onClick={(e) => router.replace("/auth/signin?" + redirect_params.toString(), undefined, { shallow: true }) }>
+                        Sign in
+                    </button>
+                </div>
+            );
+        }
     }
 
     return (

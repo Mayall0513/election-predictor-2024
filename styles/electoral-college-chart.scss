@@ -23,7 +23,7 @@
     flex-flow: row nowrap;
     align-items: stretch;
 
-    transition: width 0.25s;
+    transition: width 0.2s;
 }
 
 .chart-group .chart-subgroup {
@@ -34,8 +34,8 @@
 .chart-subgroup .chart-element {
     height: 100%;
 
-    transition: width 0.25s;
-    transition: opacity 0.25s;
+    transition: width 0.2s;
+    transition: opacity 0.2s;
 }
 
 .chart-element-blur {

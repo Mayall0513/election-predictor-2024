@@ -2,10 +2,8 @@ import Ribbon from "../components/ribbon";
 
 import users from '../data/users';
 
-export default function Index(props) {
-    return (
-        <Ribbon user={props.user}/>
-    );
+export default function _index({ user }) {
+    return <Ribbon user={ user }/>
 }
 
 export async function getServerSideProps(context) {
