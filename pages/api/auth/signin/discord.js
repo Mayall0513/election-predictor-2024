@@ -1,9 +1,6 @@
-import crypto from 'node:crypto';
-
 import axios from 'axios';
 
 import helpers from '../../../../helpers/api_helpers';
-
 
 export default async function _auth_discord(req, res) {
     const { code } = req.query;
@@ -15,7 +12,7 @@ export default async function _auth_discord(req, res) {
 
     const auth_params = new URLSearchParams(
         {
-            discord_auth_code: code
+            discord_auth_code: code.slice(0, 5)
         }
     );
 
