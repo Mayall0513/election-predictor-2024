@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 
 export default function _sign_in({ redirect_uri, using_default_uri }) {
     const [ discordCode, setDiscordCode ] = useState(null);
+    const [ errorOccured, setErrorOccured ] = useState(false);
 
     const router = useRouter();
     const redirect_params_oauth2 = new URLSearchParams(
@@ -20,67 +21,50 @@ export default function _sign_in({ redirect_uri, using_default_uri }) {
     async function discordAuthenticate() {
         const redirect_params_discord = new URLSearchParams(
             {
-                code: discordCode
+                code: discordCode.trim()
             }
         );
 
-        console.log('123');
-
         try {
-            const response = await axios.post("/api/auth/signin/discord?" + redirect_params_discord.toString());
-
-            /**
-             * Bad code
-             */
-            if (400 == response.code || 401 == response.code) {
-                /**
-                 * Show some kind of validation
-                 */
-                return;
-            }
-
-            /**
-             * Internal error
-             */
-            if (500 == response.code) {
-                /**
-                 * Show some kind of error
-                 */
-                return;
-            }
-
+            await axios.post("/api/auth/signin/discord?" + redirect_params_discord.toString());
             router.replace(redirect_uri, undefined, { shallow: true }) 
         }
 
         catch (error) {
+            if (400 == error.status || 401 == error.status) {
+                setErrorOccured(true);
+                return;
+            }
+            
             console.error(error);
         }
-        // 
     }
 
     return (
         <>
             <Ribbon signinPage={ true } redirect={ !using_default_uri && redirect_uri } />
             <button 
-                type="button" 
-                className="link-button justify-right"
+                type="button"
                 onClick={ () => router.replace("/api/auth/signin/oauth2?" + redirect_params_oauth2.toString(), undefined, { shallow: true }) }>
                 Sign in with Discord
             </button>
-            <p>Or use a authentication code: </p>
+            <p>
+                <label htmlFor="discord-code-box">Or use an authentication code: </label>
+            </p>
             <span>
-                <input 
-                    type="text" 
-                    onChange={ (e) => setDiscordCode(e.target.value) }
-                />
-                <button 
-                    type="button" 
-                    className="link-button justify-right"
-                    onClick={ discordAuthenticate }>
-                    Sign in
-                </button>
-            </span>
-
+                    <input
+                        id="discord-code-box"
+                        type="text"
+                        className={ errorOccured ? "validation-error" : null }
+                        onChange={ (e) => setDiscordCode(e.target.value) }
+                    />
+                    <button 
+                        type="button"
+                        onClick={ discordAuthenticate }
+                        disabled={ discordCode && discordCode.length == 5 ? false : true }>
+                        Sign in
+                    </button>
+                </span>
         </>
     );
 }

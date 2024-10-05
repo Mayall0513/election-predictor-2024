@@ -19,21 +19,21 @@ export default function _ribbon({ user, signinPage, redirect }) {
 
     if (user) {
         ribbon_items.push(
-            <div className="ribbon-item" key="left">
+            <div className="ribbon-item ribbon-item-left ribbon-item-large" key="left">
                 <Image className="avatar" alt="User avatar" width="64" height="64" src={ user.avatar_url } />
+                { user.username }
             </div>
         );
 
         ribbon_items.push(
-            <div className="ribbon-item" key="centre">
+            <div className="ribbon-item ribbon-item-centre" key="centre">
                 <Link className="ribbon-item-link" href="/predictions/presidential">Presidential</Link>
                 {/* <Link href="/predictions/senatorial">Senatorial</Link> */}
             </div>
         );
 
         ribbon_items.push(
-            <div className="ribbon-item" key="right">
-                { user.username }
+            <div className="ribbon-item ribbon-item-right" key="right">
                 <button
                     type="button" 
                     className="link-button justify-right"
@@ -46,11 +46,11 @@ export default function _ribbon({ user, signinPage, redirect }) {
 
     else {
         ribbon_items.push(
-            <div className="ribbon-item" key="left"></div>
+            <div className="ribbon-item ribbon-item-left" key="left"></div>
         );
 
         ribbon_items.push(
-            <div className="ribbon-item" key="centre">
+            <div className="ribbon-item ribbon-item-centre" key="centre">
                 <Link className="ribbon-item-link" href="/predictions/presidential">Presidential</Link>
                 {/* <Link href="/predictions/senatorial">Senatorial</Link> */}
             </div>
@@ -59,10 +59,10 @@ export default function _ribbon({ user, signinPage, redirect }) {
         if (signinPage) {
             if (redirect) {
                 ribbon_items.push(
-                    <div className="ribbon-item" key="right">
+                    <div className="ribbon-item ribbon-item-right" key="right">
                         <button 
                             type="button" 
-                            className="link-button justify-right"
+                            className="link-button"
                             onClick={(e) => router.replace(redirect, undefined) }>
                             Go back
                         </button>
@@ -71,16 +71,16 @@ export default function _ribbon({ user, signinPage, redirect }) {
             }
 
             else {
-                ribbon_items.push(<div className="ribbon-item" key="right"></div>);
+                ribbon_items.push(<div className="ribbon-item ribbon-item-right" key="right"></div>);
             }
         }
 
         else {
             ribbon_items.push(
-                <div className="ribbon-item" key="right">
+                <div className="ribbon-item ribbon-item-right" key="right">
                     <button 
                         type="button" 
-                        className="link-button justify-right"
+                        className="link-button"
                         onClick={(e) => router.replace("/auth/signin?" + redirect_params.toString(), undefined, { shallow: true }) }>
                         Sign in
                     </button>
