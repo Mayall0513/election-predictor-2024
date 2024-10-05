@@ -78,7 +78,32 @@ export default function _presidential(props) {
 
     const saveElectoralCollegeMap = async () => {
         const htmlElement = document.querySelector('#electoral-college-group');
-        const canvas = await html2canvas(htmlElement, { backgroundColor: null, scale: 3 });
+        const htmlElementClone = htmlElement.cloneNode(true);
+        htmlElementClone.setAttribute("style", "position:absolute;top:-620px;left:-1000px;");
+
+        /**
+         * Convert time to EST
+         */
+        const datetimeOptions = {
+            timeZone: "America/New_York",
+            dateStyle: "long",
+            timeStyle: "long"
+        };
+
+        const date = Date.now();
+        const datetimeFormatter = new Intl.DateTimeFormat("en-US", datetimeOptions);
+
+        const watermarkContainer = document.createElement("p");
+        watermarkContainer.setAttribute("style", "color:black;font-size:8px;margin-top:0px;");
+
+        const watermark = document.createTextNode(`${user.id} ${user.username} ${datetimeFormatter.format(date)} discord.gg/conservative`);
+        watermarkContainer.appendChild(watermark);
+
+        htmlElementClone.appendChild(watermarkContainer);
+
+        document.body.appendChild(htmlElementClone);
+
+        const canvas = await html2canvas(htmlElementClone, { backgroundColor: null, scale: 4 });
         
         const data = {
             metadata: {
@@ -129,6 +154,8 @@ export default function _presidential(props) {
                 }
             }, 'image/png', 1);
         }
+
+        document.body.removeChild(htmlElementClone);
     }
 
     return (
