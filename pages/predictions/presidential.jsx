@@ -114,10 +114,12 @@ export default function _presidential(props) {
             scrollX: -window.scrollX,
             scrollY: -window.scrollY,
             
-            scale: 4 * window.devicePixelRatio,
+            windowHeight: window.outerWidth + window.innerWidth,
+            windowHeight: window.outerHeight + window.innerHeight,
 
             logging: false,
 
+            scale: 4,
             backgroundColor: null
         };
 
