@@ -68,7 +68,11 @@ export default function _presidential(props) {
             : `${presidentialStates[key].votes} electoral votes`;
 
         setHoveredState(key);
-        setTooltipContents(`${presidentialStates[key].name} (${tooltipText})`);
+        setTooltipContents(
+            <div className="tooltip-text">
+                { `${presidentialStates[key].name} (${tooltipText})` }
+            </div>
+        );
     }
 
     const onStateUnhovered = (key) => {
@@ -100,11 +104,9 @@ export default function _presidential(props) {
         watermarkContainer.appendChild(watermark);
 
         htmlElementClone.appendChild(watermarkContainer);
-
         document.body.appendChild(htmlElementClone);
 
         const canvas = await html2canvas(htmlElementClone, { backgroundColor: null, scale: 4 });
-        
         const data = {
             metadata: {
                 winner: null
