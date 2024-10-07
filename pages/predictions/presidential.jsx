@@ -86,7 +86,7 @@ export default function _presidential(props) {
         htmlElementClone.setAttribute("style", "position:absolute;top:-6200px;left:-10000px;");
 
         /**
-         * Convert time to EST
+         * Convert time to EDT
          */
         const datetimeOptions = {
             timeZone: "America/New_York",
@@ -98,7 +98,7 @@ export default function _presidential(props) {
         const datetimeFormatter = new Intl.DateTimeFormat("en-US", datetimeOptions);
 
         const watermarkContainer = document.createElement("p");
-        watermarkContainer.setAttribute("style", "color:black;font-size:8px;margin-top:0px;");
+        watermarkContainer.setAttribute("style", "color:black;font-size:0.8vw;margin-top:0px;");
 
         const watermark = document.createTextNode(`${user.id} ${user.username} ${datetimeFormatter.format(date)} discord.gg/conservative`);
         watermarkContainer.appendChild(watermark);
