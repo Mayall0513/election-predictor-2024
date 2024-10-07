@@ -79,7 +79,7 @@ export default function _presidential(props) {
     const saveElectoralCollegeMap = async () => {
         const htmlElement = document.querySelector('#electoral-college-group');
         const htmlElementClone = htmlElement.cloneNode(true);
-        htmlElementClone.setAttribute("style", "position:absolute;top:-620px;left:-1000px;");
+        htmlElementClone.setAttribute("style", "position:absolute;top:-6200px;left:-10000px;");
 
         /**
          * Convert time to EST
