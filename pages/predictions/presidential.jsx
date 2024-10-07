@@ -82,31 +82,46 @@ export default function _presidential(props) {
 
     const saveElectoralCollegeMap = async () => {
         const htmlElement = document.querySelector('#electoral-college-group');
-        const htmlElementClone = htmlElement.cloneNode(true);
-        htmlElementClone.setAttribute("style", "position:absolute;top:-6200px;left:-10000px;");
 
-        /**
-         * Convert time to EDT
-         */
-        const datetimeOptions = {
-            timeZone: "America/New_York",
-            dateStyle: "long",
-            timeStyle: "long"
+        const canvasOptions = {
+            /**
+             * Add watermark when cloning
+             */
+            onclone: (document, element) => {
+                element.setAttribute("style", "position:absolute;top:-6200px;left:-10000px;");
+        
+                /**
+                 * Convert time to EDT
+                 */
+                const datetimeOptions = {
+                    timeZone: "America/New_York",
+                    dateStyle: "long",
+                    timeStyle: "long"
+                };
+        
+                const date = Date.now();
+                const datetimeFormatter = new Intl.DateTimeFormat("en-US", datetimeOptions);
+        
+                const watermarkContainer = document.createElement("p");
+                watermarkContainer.setAttribute("style", "color:black;font-size:0.8vw;margin-top:0px;");
+        
+                const watermark = document.createTextNode(`${user.id} ${user.username} ${datetimeFormatter.format(date)} discord.gg/conservative`);
+                watermarkContainer.appendChild(watermark);
+        
+                element.appendChild(watermarkContainer);        
+            },
+
+            scrollX: -window.scrollX,
+            scrollY: -window.scrollY,
+            
+            scale: 4 * window.devicePixelRatio,
+
+            logging: false,
+
+            backgroundColor: null
         };
 
-        const date = Date.now();
-        const datetimeFormatter = new Intl.DateTimeFormat("en-US", datetimeOptions);
-
-        const watermarkContainer = document.createElement("p");
-        watermarkContainer.setAttribute("style", "color:black;font-size:0.8vw;margin-top:0px;");
-
-        const watermark = document.createTextNode(`${user.id} ${user.username} ${datetimeFormatter.format(date)} discord.gg/conservative`);
-        watermarkContainer.appendChild(watermark);
-
-        htmlElementClone.appendChild(watermarkContainer);
-        document.body.appendChild(htmlElementClone);
-
-        const canvas = await html2canvas(htmlElementClone, { backgroundColor: null, scale: 4 });
+        const canvas = await html2canvas(htmlElement, canvasOptions);
         const data = {
             metadata: {
                 winner: null
@@ -156,8 +171,6 @@ export default function _presidential(props) {
                 }
             }, 'image/png', 1);
         }
-
-        document.body.removeChild(htmlElementClone);
     }
 
     return (
