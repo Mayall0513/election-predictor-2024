@@ -68,7 +68,11 @@ export default function _presidential(props) {
             : `${presidentialStates[key].votes} electoral votes`;
 
         setHoveredState(key);
-        setTooltipContents(`${presidentialStates[key].name} (${tooltipText})`);
+        setTooltipContents(
+            <div className="tooltip-text">
+                { `${presidentialStates[key].name} (${tooltipText})` }
+            </div>
+        );
     }
 
     const onStateUnhovered = (key) => {
@@ -79,7 +83,7 @@ export default function _presidential(props) {
     const saveElectoralCollegeMap = async () => {
         const htmlElement = document.querySelector('#electoral-college-group');
         const htmlElementClone = htmlElement.cloneNode(true);
-        htmlElementClone.setAttribute("style", "position:absolute;top:-620px;left:-1000px;");
+        htmlElementClone.setAttribute("style", "position:absolute;top:-6200px;left:-10000px;");
 
         /**
          * Convert time to EST
@@ -100,11 +104,9 @@ export default function _presidential(props) {
         watermarkContainer.appendChild(watermark);
 
         htmlElementClone.appendChild(watermarkContainer);
-
         document.body.appendChild(htmlElementClone);
 
         const canvas = await html2canvas(htmlElementClone, { backgroundColor: null, scale: 4 });
-        
         const data = {
             metadata: {
                 winner: null
