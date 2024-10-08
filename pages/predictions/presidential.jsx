@@ -88,8 +88,6 @@ export default function _presidential(props) {
              * Add watermark when cloning
              */
             onclone: (document, element) => {
-                element.setAttribute("style", "position:absolute;top:-6200px;left:-10000px;");
-        
                 /**
                  * Convert time to EDT
                  */
@@ -114,7 +112,7 @@ export default function _presidential(props) {
             scrollX: -window.scrollX,
             scrollY: -window.scrollY,
             
-            windowHeight: window.outerWidth + window.innerWidth,
+            windowWidth: window.outerWidth + window.innerWidth,
             windowHeight: window.outerHeight + window.innerHeight,
 
             logging: false,
