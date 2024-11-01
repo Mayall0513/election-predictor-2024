@@ -176,10 +176,8 @@ export default function _presidential(props) {
             <PredictionSentence predictionChanged={ setCurrentPrediction } setTooltip={ setTooltipContents } />
             { user && (
                 <span className="prediction-sentence-subtext">
-                    <button type="button" onClick={ saveElectoralCollegeMap }>Save</button>
-                    Warning: Predictions will be disabled on November 1ˢᵗ (11/01/2024)
+                    Predictions are now closed. Thank you to everyone who took part!
                 </span>
-
             )}
             <Tooltip contents={ tooltipContents } />
             <div id="electoral-college-group" className="state-map-container">
