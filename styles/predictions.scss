@@ -1,0 +1,16 @@
+@import 'constants';
+
+@each $prediction, $color in ($prediction-colors) {
+    .#{$prediction} {
+        fill: $color;
+        color: $color;
+    };
+
+    .#{$prediction}.chart-subgroup, .#{$prediction}.chart-element  {
+        background-color: $color;
+    };
+
+    .#{$prediction}.chart-subgroup-blur {
+        background-color: rgba($color, $blur-opacity-offset);
+    };
+};

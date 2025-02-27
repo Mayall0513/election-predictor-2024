@@ -1,0 +1,196 @@
+@import "constants.scss";
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 100;
+    color: #c0c0c0;
+    background-color: #262b41;
+}
+
+.ribbon {
+    min-height: 64px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.ribbon-container {
+    border-bottom-style: solid;
+    padding: 0px 16px 8px 16px;
+    margin-bottom: 2vh;
+
+    border-color: black;
+}
+
+.state-map-container {
+    width: 65vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.state-map:hover:not(.state-disabled) .state:not(.state-disabled) {
+    opacity: $map-not-hovered-opacity;
+}
+
+.state-disabled {
+    opacity: $map-disabled-opacity;
+}
+
+.state {
+    fill: #737373;
+    stroke: #212121;
+    stroke-width: 0.7;
+
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.state:hover:not(.state-disabled) {
+    opacity: 1 !important;
+    cursor: pointer;
+}
+
+.tooltip {
+    position: fixed;
+    z-index: 100;
+}
+
+.state-panel-tooltip {
+    pointer-events: none;
+    user-select: none;
+}
+
+.drag-dropdown {
+    display: inline-block;
+    vertical-align: bottom;
+    text-align: center;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-left: 0px !important;
+    height: 1lh;
+    transition: width 0.3s;
+}
+
+.drag-dropdown:not(.drag-dropdown-dragging) {
+    transition: transform 0.15s;
+}
+
+.drag-dropdown-item {
+    list-style: none;
+    user-select: none;
+    cursor: pointer;
+    width: fit-content
+}
+
+.drag-dropdown-item:not(.drag-dropdown-active) {
+    opacity: 0.8;
+}
+
+.drag-dropdown-item.drag-dropdown-active {
+    user-select: text;
+}
+
+.prediction-sentence-container {
+    margin-top: 4em;
+    margin-bottom: 4em;
+}
+
+.prediction-sentence {
+    font-size: larger;
+}
+
+.prediction-sentence-subtext {
+    font-size: small;
+}
+
+.electoral-college {
+    float: right;
+    width: 50%;
+}
+
+.hint-mark {
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    background-color: #171b2c;
+    border-radius: 0.5em;
+    text-align: center;
+    width: 1em;
+    height: 1em;
+}
+
+.tooltip-panel {
+    border-radius: 4px;
+    background-color: #7c7c7c;
+    padding: 6px;
+}
+
+.tooltip-text {
+    color: black;
+}
+
+.prediction-tooltip-list {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.prediction-tooltip-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.prediction-tooltip-list-item > span:not(:first-child) {
+    padding-left: 14px;
+}
+
+.prediction-tooltip-list-item:not(:first-child) {
+    padding-top: 2px;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.avatar {
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+}
+
+.ribbon-item {
+    width: 33%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+
+    font-size: large;
+}
+
+.ribbon-item-left {
+    justify-content: left;
+}
+
+.ribbon-item-centre {
+    justify-content: center;
+}
+
+.ribbon-item-right {
+    justify-content: right;
+}
+
+.ribbon-item-link:visited {
+    color: #eaeaea;
+}
+
+.validation-error {
+    border-color: red
+}
+
+.ribbon-item-large {
+    font-size: x-large;
+}

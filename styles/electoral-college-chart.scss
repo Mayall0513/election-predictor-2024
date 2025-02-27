@@ -1,0 +1,67 @@
+@import 'constants';
+
+.electoral-college-chart {
+    color: black;
+
+    min-height: 1.2vw;
+    border: thin solid;
+    background-color: #737373;
+    margin-left: 0.4vw;
+    margin-right: 0.4vw;
+
+    position: relative;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.electoral-college-chart .chart-group {
+    position: relative;
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+
+    transition: width 0.2s;
+}
+
+.chart-group .chart-subgroup {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.chart-subgroup .chart-element {
+    height: 100%;
+
+    transition: width 0.2s;
+    transition: opacity 0.2s;
+}
+
+.chart-element-blur {
+    opacity: 0;
+}
+
+.chart-center-indicator {
+    position: absolute; 
+
+    left: 50%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+
+    height: 100%;
+    opacity: 0.8;
+}
+
+.state-map:hover .electoral-college-chart {
+    opacity: $map-not-hovered-opacity;
+}
+
+.chart-group .chart-win-indicator {
+    position: absolute;
+
+    left: 50%;
+    top: calc(-100% - 2px);
+    transform: translateX(-50%);
+}
